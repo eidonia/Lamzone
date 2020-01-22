@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Ma réu</string>
+    <string name="reunion">Salle %1$d - %2$dh%3$d - %4$s</string>
+    <string name="CreerReu">Créer une réunion</string>
+    <string name="SalleReu">Salle où se passera la réunion</string>
+    <string name="hostReu">Organisateur de la réunion : </string>
+    <string name="hintHost">Nom de l\'organisateur</string>
+    <string name="textParti">Participants</string>
+    <string name="hintParti">Noms des participants</string>
+    <string name="textCreate">Créer la réunion</string>
+</resources>

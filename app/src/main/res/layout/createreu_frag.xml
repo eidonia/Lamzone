@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/txtReu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/CreerReu"
+        android:gravity="center"
+        android:textSize="28dp"/>
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txtReu"
+        android:timePickerMode="spinner"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/textSalle"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            app:layout_constraintTop_toBottomOf="@id/timePicker"
+            android:text="@string/SalleReu"
+            android:layout_marginRight="20dp"/>
+
+        <Spinner
+            android:id="@+id/spinSalle"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/textSalle"
+            android:layout_column="1"
+            android:layout_columnWeight="1" />
+
+    <TextView
+        android:id="@+id/textHost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/spinSalle"
+        android:layout_marginTop="25dp"
+        android:text="@string/hostReu"/>
+
+    <EditText
+        android:id="@+id/editHost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hintHost"
+        app:layout_constraintTop_toBottomOf="@id/textHost"/>
+
+    <TextView
+        android:id="@+id/textParti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/editHost"
+        android:layout_marginTop="25dp"
+        android:text="@string/textParti"/>
+
+    <EditText
+        android:id="@+id/editParti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hintParti"
+        app:layout_constraintTop_toBottomOf="@id/textParti"/>
+
+    <TextView
+        android:id="@+id/textCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/editParti"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="25dp"
+        android:text="@string/CreerReu"
+        android:textColor="@color/colorBtnCreate"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

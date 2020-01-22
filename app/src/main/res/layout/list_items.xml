@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imgList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circleimg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/imgList"
+        app:layout_constraintBottom_toBottomOf="@id/imgList"
+        app:layout_constraintTop_toTopOf="@id/imgList"
+        android:textAppearance="?android:textAppearanceListItem"
+        app:layout_constraintVertical_bias="0"
+        android:paddingStart="15dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txtListPart"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@id/txtList"
+        app:layout_constraintEnd_toStartOf="@id/btnDelete"
+        app:layout_constraintStart_toEndOf="@id/imgList"
+        android:textAppearance="?android:textAppearanceListItemSecondary"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:ellipsize="end"
+        android:paddingStart="15dp"
+         />
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:layout_constraintTop_toTopOf="@id/imgList"
+        app:layout_constraintBottom_toBottomOf="@id/imgList"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
