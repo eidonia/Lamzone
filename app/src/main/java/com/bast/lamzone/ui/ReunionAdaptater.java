@@ -1,6 +1,7 @@
 package com.bast.lamzone.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bast.lamzone.R;
 import com.bast.lamzone.models.Reunion;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder> {
@@ -41,7 +43,10 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
         }else{
             holder.img.setBackgroundTintList(context.getResources().getColorStateList(R.color.colorList2));
         }
-        holder.txtReu.setText(context.getResources().getString(R.string.reunion, reu.getSalle(), reu.getHeure(), reu.getMinute(), reu.getHost()));
+
+        String minuteDec = new DecimalFormat("00").format(reu.getMinute());
+
+        holder.txtReu.setText(context.getResources().getString(R.string.reunion, reu.getSalle(), reu.getHeure(), minuteDec, reu.getHost()));
         holder.txtParti.setText(reu.getParticipants());
 
     }
@@ -60,9 +65,21 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            img = (ImageView) itemView.findViewById(R.id.imgList);
-            txtReu = (TextView) itemView.findViewById(R.id.txtList);
-            txtParti = (TextView) itemView.findViewById(R.id.txtListPart);
+            img = itemView.findViewById(R.id.imgList);
+            txtReu = itemView.findViewById(R.id.txtList);
+            txtParti = itemView.findViewById(R.id.txtListPart);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int itemPos = getLayoutPosition();
+                    Context ctx = v.getContext();
+                    Intent intent = new Intent(ctx, ReunionPage.class);
+                    intent.putExtra("POSREU", itemPos);
+                    ctx.startActivity(intent);
+
+                }
+            });
         }
     }
 }

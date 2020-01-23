@@ -42,7 +42,6 @@ public class CreateReuFrag extends DialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState){
         final Context context = getActivity();
-        Context ctx = getContext();
         final AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialog);
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -70,9 +69,6 @@ public class CreateReuFrag extends DialogFragment {
             heure = picker.getHour();
             minutes = picker.getMinute();
         }
-
-
-
         createSpinner(context, spin);
 
         if(mReunion.size() > 0){

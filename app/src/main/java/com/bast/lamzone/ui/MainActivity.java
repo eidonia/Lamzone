@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     private void initList() {
         apiService = Di.getApiServiceReu();
         mReunion = apiService.getReunion();
-        //mReunion.add(new Reunion(1, "14h", "Bastien", "bastien.rambeaud@hotmail.com"));
+        mReunion.add(new Reunion(1, 14, 30, "Bastien", "bastien.rambeaud@hotmail.com, bastien.rambeaud@hotmail.com, bastien.rambeaud@hotmail.com"));
         //mReunion.add(new Reunion(2, "14h", "Bastien", "bastien.rambeaud@hotmail.com, bastien.rambeaud@hotmail.com"));
 
         binding.rvList.setAdapter(new ReunionAdaptater(mReunion, this));
