@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_filter) {
-            showDialogFrag();
+            showDialogFilterFrag();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -89,6 +89,12 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         FragmentManager fm = getSupportFragmentManager();
         CreateReuFrag createReuFrag = new CreateReuFrag();
         createReuFrag.show(fm, "create");
+    }
+
+    public void showDialogFilterFrag(){
+        FragmentManager fm = getSupportFragmentManager();
+        FilterReuFrag filterReuFrag = new FilterReuFrag();
+        filterReuFrag.show(fm, "create");
     }
 
 }

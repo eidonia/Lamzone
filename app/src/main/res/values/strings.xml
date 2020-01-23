@@ -8,6 +8,11 @@
     <string name="textParti">Participants</string>
     <string name="hintParti">Noms des participants</string>
     <string name="textCreate">Créer la réunion</string>
+    <string name="filter">Filtre</string>
+    <string name="txtChoixSalle">Quelles salles voulez vous voir?</string>
+    <string name="txtheureReu">Heure de la réunion</string>
+    <string name="txtHost">Organisateur de la réunion</string>
+    <string name="btnSearch">Filtrer les réunions</string>
 
     ReunionPage
 

@@ -39,7 +39,6 @@ public class CreateReuFrag extends DialogFragment {
     TextView textCreate;
 
 
-
     public Dialog onCreateDialog(Bundle savedInstanceState){
         final Context context = getActivity();
         final AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialog);
