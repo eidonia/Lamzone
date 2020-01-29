@@ -6,11 +6,204 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/boxfilter"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imgSalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/ic_business_black_24dp"
+            android:text="@string/txtChoixSalle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/gridSalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/imgSalle"
+            app:layout_constraintBottom_toBottomOf="@id/imgSalle"
+            app:layout_constraintStart_toEndOf="@id/imgSalle"
+            android:layout_marginStart="30dp">
+            <CheckBox
+                android:id="@+id/salle1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 1"/>
+
+            <CheckBox
+                android:id="@+id/salle2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/salle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 2"/>
+
+            <CheckBox
+                android:id="@+id/salle3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/salle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 3"/>
+            <CheckBox
+                android:id="@+id/salle4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/salle3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 4"/>
+            <CheckBox
+                android:id="@+id/salle5"
+                app:layout_constraintTop_toBottomOf="@id/salle1"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 5"/>
+            <CheckBox
+                android:id="@+id/salle6"
+                app:layout_constraintTop_toBottomOf="@id/salle2"
+                app:layout_constraintStart_toEndOf="@id/salle5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 6"/>
+            <CheckBox
+                android:id="@+id/salle7"
+                app:layout_constraintTop_toBottomOf="@id/salle3"
+                app:layout_constraintStart_toEndOf="@id/salle6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 7"/>
+            <CheckBox
+                android:id="@+id/salle8"
+                app:layout_constraintTop_toBottomOf="@id/salle4"
+                app:layout_constraintStart_toEndOf="@id/salle7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 8"/>
+            <CheckBox
+                android:id="@+id/salle9"
+                app:layout_constraintTop_toBottomOf="@id/salle6"
+                app:layout_constraintEnd_toEndOf="@id/salle6"
+                app:layout_constraintStart_toStartOf="@id/salle6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 9"/>
+
+            <CheckBox
+                android:id="@+id/salle10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salle 10"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toEndOf="@id/salle7"
+                app:layout_constraintStart_toStartOf="@id/salle7"
+                app:layout_constraintTop_toBottomOf="@id/salle7" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="15dp"
+            android:background="#959292"
+            app:layout_constraintTop_toBottomOf="@id/gridSalle" />
+
+        <ImageView
+            android:id="@+id/imgClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_access_time_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/btnFilterDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnFilterDate" />
+
+        <TextView
+            android:id="@+id/btnFilterDate"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toStartOf="@id/btnFilterDate"
+            app:layout_constraintStart_toEndOf="@id/imgClock"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider" />
+
+
+        <TextView
+            android:id="@+id/btnFilterHour"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider" />
+
+        <View
+            android:id="@+id/viewDivider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="15dp"
+            android:background="#959292"
+            app:layout_constraintTop_toBottomOf="@id/btnFilterDate" />
+
+        <ImageView
+            android:id="@+id/imgHost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider2"
+            android:background="@drawable/ic_person_black_24dp"/>
+
+        <EditText
+            android:id="@+id/editHost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hintHost"
+            android:layout_marginStart="10dp"
+            android:maxLines="1"
+            app:layout_constraintTop_toTopOf="@id/imgHost"
+            app:layout_constraintBottom_toBottomOf="@id/imgHost"
+            app:layout_constraintStart_toEndOf="@id/imgHost"
+            android:background="#02FAF9F9"/>
+
+        <View
+            android:id="@+id/viewDivider3"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_margin="15dp"
+            android:background="#020202"
+            app:layout_constraintTop_toBottomOf="@id/editHost" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/list_items"/>
+        android:layout_height="0dp"
+        tools:listitem="@layout/list_items"
+        app:layout_constraintTop_toBottomOf="@id/boxfilter"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

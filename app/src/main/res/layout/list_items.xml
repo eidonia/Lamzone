@@ -28,7 +28,7 @@
 
     <TextView
         android:id="@+id/txtListPart"
-        android:layout_width="310dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
         app:layout_constraintTop_toBottomOf="@id/txtList"

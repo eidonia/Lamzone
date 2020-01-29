@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#304FFE</color>
-    <color name="colorPrimaryDark">#0091EA</color>
+    <color name="colorPrimaryDark">#304FFE</color>
+    <color name="colorPrimary">#0091EA</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorList1">#EF9A9A</color>
     <color name="colorList2">#CE93D8</color>
-    <color name="colorBtnCreate">#42A5F5</color>
+    <color name="colorBtnCreate">#F7F8F8</color>
     <color name="colorBgReuPage">#FDBFC1C3</color>
 </resources>

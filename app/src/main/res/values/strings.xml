@@ -1,18 +1,27 @@
 <resources>
     <string name="app_name">Ma réu</string>
     <string name="reunion">Salle %1$d - %2$dh%3$s - %4$s</string>
-    <string name="CreerReu">Créer une réunion</string>
+
+    Créer la réunion
+
+    <string name="CreerReu">Réunion</string>
+    <string name="Enregistrer">Enregistrer</string>
     <string name="SalleReu">Salle où se passera la réunion</string>
     <string name="hostReu">Organisateur de la réunion : </string>
     <string name="hintHost">Nom de l\'organisateur</string>
     <string name="textParti">Participants</string>
-    <string name="hintParti">Noms des participants</string>
+    <string name="hintParti">Email des participants</string>
     <string name="textCreate">Créer la réunion</string>
+    <string name="textCreaDate">%1$s %2$d %3$s %4$d</string>
+
+    Filter Réunion
+
     <string name="filter">Filtre</string>
     <string name="txtChoixSalle">Quelles salles voulez vous voir?</string>
-    <string name="txtheureReu">Heure de la réunion</string>
+    <string name="txtheureReu">Date réunion</string>
     <string name="txtHost">Organisateur de la réunion</string>
     <string name="btnSearch">Filtrer les réunions</string>
+    <string name="txtHeure">%1$s:%2$s</string>
 
     ReunionPage
 
