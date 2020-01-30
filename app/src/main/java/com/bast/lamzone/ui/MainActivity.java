@@ -34,7 +34,30 @@ public class MainActivity extends AppCompatActivity {
     int dateDay;
     String month;
     int year;
+    private CompoundButton.OnCheckedChangeListener ChangedChecked = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            String salle = (String) buttonView.getText();
+            String salle2 = salle.substring(6);
+            int salleInt = Integer.parseInt(salle2);
 
+            if (isChecked) {
+                for (int i = 0; i < mReunion.size(); i++) {
+                    if (salleInt == mReunion.get(i).getSalle()) {
+                        mFilteredReunion.add(mReunion.get(i));
+                    }
+                }
+                onUpdate();
+            } else {
+                for (int x = mFilteredReunion.size() - 1; x >= 0; x--) {
+                    if (salleInt == mFilteredReunion.get(x).getSalle()) {
+                        mFilteredReunion.remove(mFilteredReunion.get(x));
+                    }
+                }
+                onUpdate();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,31 +181,6 @@ public class MainActivity extends AppCompatActivity {
         });
         clock.show(fm, "clock");
     }
-
-    private CompoundButton.OnCheckedChangeListener ChangedChecked = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            String salle = (String) buttonView.getText();
-            String salle2 = salle.substring(6);
-            int salleInt = Integer.parseInt(salle2);
-
-            if (isChecked) {
-                for (int i = 0; i < mReunion.size(); i++) {
-                    if (salleInt == mReunion.get(i).getSalle()) {
-                        mFilteredReunion.add(mReunion.get(i));
-                    }
-                }
-                onUpdate();
-            } else {
-                for (int x = mFilteredReunion.size() - 1; x >= 0; x--) {
-                    if (salleInt == mFilteredReunion.get(x).getSalle()) {
-                        mFilteredReunion.remove(mFilteredReunion.get(x));
-                    }
-                }
-                onUpdate();
-            }
-        }
-    };
 
     private void uncheckRoom() {
         binding.salle1.setChecked(false);
