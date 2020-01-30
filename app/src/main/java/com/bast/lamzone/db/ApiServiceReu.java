@@ -7,4 +7,6 @@ import java.util.List;
 public interface ApiServiceReu {
 
     List<Reunion> getReunion();
+
+    List<Reunion> getReunionFiltered();
 }

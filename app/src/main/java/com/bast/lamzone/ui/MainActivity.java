@@ -1,34 +1,33 @@
 package com.bast.lamzone.ui;
 
 import android.os.Bundle;
-
-import com.bast.lamzone.R;
-import com.bast.lamzone.models.Reunion;
-import com.bast.lamzone.databinding.ActivityMainBinding;
-import com.bast.lamzone.db.ApiServiceReu;
-import com.bast.lamzone.di.Di;
-import com.bast.lamzone.models.Time;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
+import com.bast.lamzone.R;
+import com.bast.lamzone.databinding.ActivityMainBinding;
+import com.bast.lamzone.db.ApiServiceReu;
+import com.bast.lamzone.di.Di;
+import com.bast.lamzone.models.Reunion;
+import com.bast.lamzone.models.Time;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Filterable {
+public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     ApiServiceReu apiService;
     List<Reunion> mReunion;
+    List<Reunion> mFilteredReunion;
     int heure;
     int minutes;
     String day;
@@ -45,6 +44,17 @@ public class MainActivity extends AppCompatActivity implements Filterable {
 
         binding.rvList.setLayoutManager(new LinearLayoutManager(this));
         binding.rvList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        binding.salle1.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle2.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle3.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle4.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle5.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle6.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle7.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle8.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle9.setOnCheckedChangeListener(ChangedChecked);
+        binding.salle10.setOnCheckedChangeListener(ChangedChecked);
+
         initList();
 
         Time time = new Time();
@@ -56,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         dateDay = time.getDateDay();
         month = time.getMonth();
         year = time.getYear();
+
 
         binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
         binding.btnFilterHour.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
@@ -69,29 +80,28 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
                     ViewGroup.LayoutParams params = binding.boxfilter.getLayoutParams();
                     params.height = 1;
                     binding.boxfilter.setLayoutParams(params);
                 }
+                onUpdate();
                 showDialogFrag();
             }
         });
-
-
     }
 
     private void initList() {
         apiService = Di.getApiServiceReu();
         mReunion = apiService.getReunion();
-        //mReunion.add(new Reunion(10, 14, 30, "Julie", "bastien.rambeaud@hotmail.com, bastien.rambeaud@hotmail.com, bastien.rambeaud@hotmail.com"));
-        //mReunion.add(new Reunion(2, 15, 00, "Bastien", "bastien.rambeaud@hotmail.com, bastien.rambeaud@hotmail.com"));
+        mFilteredReunion = apiService.getReunionFiltered();
 
-
-
-        binding.rvList.setAdapter(new ReunionAdaptater(mReunion, this));
+        if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            binding.rvList.setAdapter(new ReunionAdaptater(mFilteredReunion, this));
+        } else {
+            binding.rvList.setAdapter(new ReunionAdaptater(mReunion, this));
+        }
     }
-
 
     public void onUpdate() {
         initList();
@@ -107,26 +117,26 @@ public class MainActivity extends AppCompatActivity implements Filterable {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_filter) {
-            if(binding.boxfilter.getLayoutParams().height != ViewGroup.LayoutParams.WRAP_CONTENT) {
+            if (binding.boxfilter.getLayoutParams().height != ViewGroup.LayoutParams.WRAP_CONTENT) {
                 ViewGroup.LayoutParams params = binding.boxfilter.getLayoutParams();
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 binding.boxfilter.setLayoutParams(params);
-            }else{
+                onUpdate();
+            } else {
                 ViewGroup.LayoutParams params2 = binding.boxfilter.getLayoutParams();
                 params2.height = 1;
                 binding.boxfilter.setLayoutParams(params2);
+                if (mFilteredReunion != null)
+                    mFilteredReunion.clear();
+                uncheckRoom();
+                onUpdate();
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public Filter getFilter() {
-        //TODO
-        return null;
-    }
-
-    public void showDialogFrag(){
+    public void showDialogFrag() {
         FragmentManager fm = getSupportFragmentManager();
         CreateReuFrag createReuFrag = new CreateReuFrag();
         createReuFrag.show(fm, "create");
@@ -149,4 +159,41 @@ public class MainActivity extends AppCompatActivity implements Filterable {
         clock.show(fm, "clock");
     }
 
+    private CompoundButton.OnCheckedChangeListener ChangedChecked = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            String salle = (String) buttonView.getText();
+            String salle2 = salle.substring(6);
+            int salleInt = Integer.parseInt(salle2);
+
+            if (isChecked) {
+                for (int i = 0; i < mReunion.size(); i++) {
+                    if (salleInt == mReunion.get(i).getSalle()) {
+                        mFilteredReunion.add(mReunion.get(i));
+                    }
+                }
+                onUpdate();
+            } else {
+                for (int x = mFilteredReunion.size() - 1; x >= 0; x--) {
+                    if (salleInt == mFilteredReunion.get(x).getSalle()) {
+                        mFilteredReunion.remove(mFilteredReunion.get(x));
+                    }
+                }
+                onUpdate();
+            }
+        }
+    };
+
+    private void uncheckRoom() {
+        binding.salle1.setChecked(false);
+        binding.salle2.setChecked(false);
+        binding.salle3.setChecked(false);
+        binding.salle4.setChecked(false);
+        binding.salle5.setChecked(false);
+        binding.salle6.setChecked(false);
+        binding.salle7.setChecked(false);
+        binding.salle8.setChecked(false);
+        binding.salle9.setChecked(false);
+        binding.salle10.setChecked(false);
+    }
 }

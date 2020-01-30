@@ -83,7 +83,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
                 }else {
 
                     String salleReplace = (String) spin.getSelectedItem();
-                    int salle = Integer.parseInt(salleReplace.substring(salleReplace.length() - 1));
+                    int salle = Integer.parseInt(salleReplace.substring(6));
                     mReunion.add(new Reunion(salle, heure, minutes, String.valueOf(editHost.getText()), String.valueOf(editParti.getText())));
                     Toast.makeText(context, "Réunion créée", Toast.LENGTH_SHORT).show();
                     dismiss();
@@ -99,7 +99,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
     }
 
 
-    public void createSpinner(Context context, Spinner spin) {
+    public void createSpinner(final Context context, final Spinner spin) {
         salle.add("Selectionner une salle");
         salle.add("Salle 1");
         salle.add("Salle 2");
@@ -112,7 +112,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         salle.add("Salle 9");
         salle.add("Salle 10");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, salle){
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, salle) {
             @Override
             public boolean isEnabled(int position) {
                 for(int i = 0; i <mReunion.size(); i++) {
@@ -127,12 +127,11 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             public View getDropDownView(int position, View convertView, ViewGroup parent){
                 View mView = super.getDropDownView(position, convertView, parent);
                 TextView mText = (TextView) mView;
-                for(int i = 0; i <mReunion.size(); i++) {
-                    if (mReunion.get(i).getHeure() == heure && mReunion.get(i).getSalle() == position) {
-                        mText.setTextColor(Color.GRAY);
-                    }else{
-                        mText.setTextColor(Color.BLACK);
-                    }
+                boolean disabled = !isEnabled(position);
+                if (disabled) {
+                    mText.setTextColor(Color.GRAY);
+                } else {
+                    mText.setTextColor(Color.BLACK);
                 }
                 return mView;
             }
@@ -159,8 +158,5 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         });
         clock.show(fm, "clock");
     }
-
-
-
 
 }

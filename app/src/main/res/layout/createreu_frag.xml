@@ -154,6 +154,7 @@
         app:layout_constraintTop_toTopOf="@id/imgParti"
         app:layout_constraintBottom_toBottomOf="@id/imgParti"
         app:layout_constraintStart_toEndOf="@id/imgParti"
-        android:background="#02FAF9F9"/>
+        android:background="#02FAF9F9"
+        android:inputType="textEmailAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
