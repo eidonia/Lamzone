@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -19,21 +20,19 @@ import com.bast.lamzone.di.Di;
 import com.bast.lamzone.models.Reunion;
 import com.bast.lamzone.models.Time;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
     ApiServiceReu apiService;
-    List<Reunion> mReunion;
-    List<Reunion> mFilteredReunion;
-    int heure;
-    int minutes;
+    private List<Reunion> mReunion;
+    private List<Reunion> mFilteredReunion;
     String day;
     int dateDay;
     String month;
     int year;
+
     private CompoundButton.OnCheckedChangeListener ChangedChecked = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -81,10 +80,6 @@ public class MainActivity extends AppCompatActivity {
         initList();
 
         Time time = new Time();
-        heure = time.getHeure();
-        minutes = time.getMinutes();
-        String heureString = new DecimalFormat("00").format(heure);
-        String minutesString = new DecimalFormat("00").format(minutes);
         day = time.getDay();
         dateDay = time.getDateDay();
         month = time.getMonth();
@@ -92,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
-        binding.btnFilterHour.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
-        binding.btnFilterHour.setOnClickListener(new View.OnClickListener() {
+        binding.btnFilterDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogClock();
+                showDialogDate();
+                mFilteredReunion.clear();
             }
         });
 
@@ -120,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
         mFilteredReunion = apiService.getReunionFiltered();
 
         if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            binding.rvList.setAdapter(new ReunionAdaptater(mFilteredReunion, this));
+            binding.rvList.setAdapter(new ReunionAdaptater(mFilteredReunion, 1, this));
         } else {
-            binding.rvList.setAdapter(new ReunionAdaptater(mReunion, this));
+            binding.rvList.setAdapter(new ReunionAdaptater(mReunion, 0, this));
         }
     }
 
@@ -151,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.boxfilter.setLayoutParams(params2);
                 if (mFilteredReunion != null)
                     mFilteredReunion.clear();
-                uncheckRoom();
+                RaZFilter();
                 onUpdate();
             }
         }
@@ -165,24 +160,42 @@ public class MainActivity extends AppCompatActivity {
         createReuFrag.show(fm, "create");
     }
 
-    public void showDialogClock() {
+    private void showDialogDate() {
         FragmentManager fm = getSupportFragmentManager();
-        Clock clock = new Clock();
-        clock.setOnTimeChooser(new Clock.OnTimeChooser() {
+        Date date = new Date();
+        date.setOnDateChooser(new Date.OnDateChooser() {
 
             @Override
-            public void setOnTimeChooser(int heure, int minutes) {
-                String heureString = new DecimalFormat("00").format(heure);
-                String minutesString = new DecimalFormat("00").format(minutes);
-                binding.btnFilterHour.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
-                MainActivity.this.heure = heure;
-                MainActivity.this.minutes = minutes;
+            public void setOnDateChooser(int day, int dateDay, int month, int year) {
+                Time time = new Time();
+                String dayString = time.getDayInt(day);
+                MainActivity.this.day = dayString;
+                MainActivity.this.dateDay = dateDay;
+                String monthString = time.getMonthInt(month);
+                MainActivity.this.month = monthString;
+                MainActivity.this.year = year;
+                binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
+                onUpdate();
+                for (int i = 0; i < mReunion.size(); i++) {
+                    String monthUp = mReunion.get(i).getMonth().substring(0, 1).toUpperCase() + mReunion.get(i).getMonth().substring(1);
+                    if (mReunion.get(i).getDateDay() == dateDay && monthUp.equals(monthString)) {
+                        mFilteredReunion.add(mReunion.get(i));
+                        Toast.makeText(MainActivity.this, "mFiltered" + mFilteredReunion.size(), Toast.LENGTH_LONG).show();
+                    }
+                }
+                for (int i = mFilteredReunion.size() - 1; i >= 0; i--) {
+                    String monthUp = mFilteredReunion.get(i).getMonth().substring(0, 1).toUpperCase() + mFilteredReunion.get(i).getMonth().substring(1);
+                    if (mFilteredReunion.get(i).getDateDay() != dateDay && !monthUp.equals(monthString)) {
+                        mFilteredReunion.remove(mFilteredReunion.get(i));
+                    }
+                }
+                onUpdate();
             }
         });
-        clock.show(fm, "clock");
+        date.show(fm, "date");
     }
 
-    private void uncheckRoom() {
+    private void RaZFilter() {
         binding.salle1.setChecked(false);
         binding.salle2.setChecked(false);
         binding.salle3.setChecked(false);
@@ -193,5 +206,12 @@ public class MainActivity extends AppCompatActivity {
         binding.salle8.setChecked(false);
         binding.salle9.setChecked(false);
         binding.salle10.setChecked(false);
+
+        Time time = new Time();
+        day = time.getDay();
+        dateDay = time.getDateDay();
+        month = time.getMonth();
+        year = time.getYear();
+        binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
     }
 }

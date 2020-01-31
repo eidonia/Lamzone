@@ -1,6 +1,5 @@
 package com.bast.lamzone.models;
 
-import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class Time {
@@ -11,7 +10,7 @@ public class Time {
     int dateDay;
     String month;
     int year;
-    Calendar date = Calendar.getInstance();
+    private Calendar date = Calendar.getInstance();
 
     public int getHeure(){
         return date.get(Calendar.HOUR_OF_DAY);
@@ -22,7 +21,7 @@ public class Time {
     }
 
     public String getDay(){
-        return getDay(date.get(Calendar.DAY_OF_WEEK)) ;
+        return getDayInt(date.get(Calendar.DAY_OF_WEEK));
 
     }
 
@@ -31,7 +30,7 @@ public class Time {
     }
 
     public String getMonth(){
-        return getMonth(date.get(Calendar.MONTH));
+        return getMonthInt(date.get(Calendar.MONTH));
     }
 
     public int getYear(){
@@ -39,8 +38,7 @@ public class Time {
     }
 
 
-
-    public String getDay(int dayInt){
+    public String getDayInt(int dayInt) {
 
         String day="";
         switch (dayInt) {
@@ -69,7 +67,8 @@ public class Time {
         return day;
 
     }
-    public String getMonth(int monthInt) {
+
+    public String getMonthInt(int monthInt) {
         String month = "";
         switch (monthInt) {
             case 0:

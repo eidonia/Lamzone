@@ -27,32 +27,32 @@ import java.util.List;
 
 public class CreateReuFrag extends BottomSheetDialogFragment {
 
-    Spinner spin;
-    EditText editHost;
-    EditText editParti;
-    ApiServiceReu apiService;
-    List<Reunion> mReunion;
-    List<String> salle = new ArrayList<>();
-    TextView textCreate, btnHeure, btnDay;
-    int heure;
-    int minutes;
-    String day;
-    int dateDay;
-    String month;
-    int year;
+    private Spinner spin;
+    private EditText editHost;
+    private EditText editParti;
+    private List<Reunion> mReunion;
+    private List<String> salle = new ArrayList<>();
+    private TextView btnHeure;
+    private TextView btnDay;
+    private int heure;
+    private int minutes;
+    private String day;
+    private int dateDay;
+    private String month;
+    private int year;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         final Context context = getActivity();
         View view = inflater.inflate(R.layout.createreu_frag, null);
 
-        apiService = Di.getApiServiceReu();
+        ApiServiceReu apiService = Di.getApiServiceReu();
         mReunion = apiService.getReunion();
         btnHeure = view.findViewById(R.id.btnHeureCrea);
         spin = view.findViewById(R.id.spinSalle);
         editHost = view.findViewById(R.id.editHost);
         editParti = view.findViewById(R.id.editParti);
-        textCreate = view.findViewById(R.id.textCreate);
+        TextView textCreate = view.findViewById(R.id.textCreate);
         btnDay = view.findViewById(R.id.btnCreaDate);
 
         Time time = new Time();
@@ -72,8 +72,15 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
                 showDialogClock();
             }
         });
+        btnDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogDate();
+            }
+        });
 
         createSpinner(context, spin);
+
 
         textCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +91,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
 
                     String salleReplace = (String) spin.getSelectedItem();
                     int salle = Integer.parseInt(salleReplace.substring(6));
-                    mReunion.add(new Reunion(salle, heure, minutes, String.valueOf(editHost.getText()), String.valueOf(editParti.getText())));
+                    mReunion.add(new Reunion(salle, heure, minutes, day, dateDay, month, year, String.valueOf(editHost.getText()), String.valueOf(editParti.getText())));
                     Toast.makeText(context, "Réunion créée", Toast.LENGTH_SHORT).show();
                     dismiss();
                     MainActivity act = (MainActivity) getActivity();
@@ -99,7 +106,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
     }
 
 
-    public void createSpinner(final Context context, final Spinner spin) {
+    private void createSpinner(final Context context, final Spinner spin) {
         salle.add("Selectionner une salle");
         salle.add("Salle 1");
         salle.add("Salle 2");
@@ -142,7 +149,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
 
     }
 
-    public void showDialogClock() {
+    private void showDialogClock() {
         FragmentManager fm = getFragmentManager();
         Clock clock = new Clock();
         clock.setOnTimeChooser(new Clock.OnTimeChooser() {
@@ -157,6 +164,27 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             }
         });
         clock.show(fm, "clock");
+    }
+
+    private void showDialogDate() {
+        FragmentManager fm = getFragmentManager();
+        Date date = new Date();
+        date.setOnDateChooser(new Date.OnDateChooser() {
+
+            @Override
+            public void setOnDateChooser(int day, int dateDay, int month, int year) {
+                Time time = new Time();
+                String dayString = time.getDayInt(day);
+                CreateReuFrag.this.day = dayString;
+                CreateReuFrag.this.dateDay = dateDay;
+                String monthString = time.getMonthInt(month);
+                CreateReuFrag.this.month = monthString;
+                CreateReuFrag.this.year = year;
+                btnDay.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
+
+            }
+        });
+        date.show(fm, "date");
     }
 
 }

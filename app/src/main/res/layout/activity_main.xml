@@ -128,7 +128,7 @@
             android:id="@+id/imgClock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_access_time_black_24dp"
+            android:background="@drawable/ic_event_black_24dp"
             app:layout_constraintBottom_toBottomOf="@id/btnFilterDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/btnFilterDate" />
@@ -145,52 +145,13 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintTop_toBottomOf="@id/viewDivider" />
 
-
-        <TextView
-            android:id="@+id/btnFilterHour"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewDivider" />
-
-        <View
-            android:id="@+id/viewDivider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="15dp"
-            android:background="#959292"
-            app:layout_constraintTop_toBottomOf="@id/btnFilterDate" />
-
-        <ImageView
-            android:id="@+id/imgHost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewDivider2"
-            android:background="@drawable/ic_person_black_24dp"/>
-
-        <EditText
-            android:id="@+id/editHost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/hintHost"
-            android:layout_marginStart="10dp"
-            android:maxLines="1"
-            app:layout_constraintTop_toTopOf="@id/imgHost"
-            app:layout_constraintBottom_toBottomOf="@id/imgHost"
-            app:layout_constraintStart_toEndOf="@id/imgHost"
-            android:background="#02FAF9F9"/>
-
         <View
             android:id="@+id/viewDivider3"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_margin="15dp"
             android:background="#020202"
-            app:layout_constraintTop_toBottomOf="@id/editHost" />
+            app:layout_constraintTop_toBottomOf="@id/btnFilterDate" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

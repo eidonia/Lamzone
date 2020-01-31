@@ -15,16 +15,19 @@ import com.bast.lamzone.R;
 import com.bast.lamzone.models.Reunion;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder> {
 
-    List<Reunion> mReunion;
-    Context context;
+    private List<Reunion> mReunion;
+    private Context context;
+    private int numList;
 
-    public ReunionAdaptater(List<Reunion> mReunion, Context context) {
+    public ReunionAdaptater(List<Reunion> mReunion, int numList, Context context) {
         this.mReunion = mReunion;
         this.context = context;
+        this.numList = numList;
     }
 
     @NonNull
@@ -62,7 +65,7 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
         TextView txtReu;
         TextView txtParti;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             img = itemView.findViewById(R.id.imgList);
@@ -73,9 +76,12 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
                 @Override
                 public void onClick(View v) {
                     int itemPos = getLayoutPosition();
+                    ArrayList<Integer> posAndNumList = new ArrayList<>();
+                    posAndNumList.add(itemPos);
+                    posAndNumList.add(numList);
                     Context ctx = v.getContext();
                     Intent intent = new Intent(ctx, ReunionPage.class);
-                    intent.putExtra("POSREU", itemPos);
+                    intent.putIntegerArrayListExtra("POSREU", posAndNumList);
                     ctx.startActivity(intent);
 
                 }

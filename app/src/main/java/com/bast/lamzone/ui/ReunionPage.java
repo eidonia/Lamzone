@@ -1,10 +1,10 @@
 package com.bast.lamzone.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bast.lamzone.R;
 import com.bast.lamzone.databinding.ActivityReunionPageBinding;
@@ -14,11 +14,12 @@ import com.bast.lamzone.models.Reunion;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReunionPage extends AppCompatActivity {
 
-    ActivityReunionPageBinding binding;
+    private ActivityReunionPageBinding binding;
 
     ApiServiceReu apiService;
     List<Reunion> lReu;
@@ -31,10 +32,16 @@ public class ReunionPage extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        int itemPos = intent.getIntExtra("POSREU", 0);
+        ArrayList<Integer> mPosandNumList = intent.getIntegerArrayListExtra("POSREU");
+        int itemPos = mPosandNumList.get(0);
+        int numList = mPosandNumList.get(1);
 
         apiService = Di.getApiServiceReu();
-        lReu = apiService.getReunion();
+        if (numList == 0) {
+            lReu = apiService.getReunion();
+        } else if (numList == 1) {
+            lReu = apiService.getReunionFiltered();
+        }
         reunion = lReu.get(itemPos);
 
         String part = reunion.getParticipants().replace(", ", "\n- ");
@@ -64,7 +71,7 @@ public class ReunionPage extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + i == 0){
-                    binding.collapseTool.setTitle(getResources().getString(R.string.reunion, reunion.getSalle(), reunion.getHeure(), minuteDec, reunion.getHost()));
+                    binding.collapseTool.setTitle(getResources().getString(R.string.reunionPage, reunion.getSalle(), reunion.getHeure(), minuteDec, reunion.getDateDay(), reunion.getMonth(), reunion.getHost()));
                     isShow = true;
                 }else if (isShow){
                     binding.collapseTool.setTitle(" ");
@@ -83,7 +90,7 @@ public class ReunionPage extends AppCompatActivity {
         }
 
         binding.gridNom.setText(getResources().getString(R.string.salleNumber, reunion.getSalle()));
-        binding.textHour.setText(getResources().getString(R.string.heureReunion, reunion.getHeure(), minuteDec ));
+        binding.textHour.setText(getResources().getString(R.string.heureReunion, reunion.getHeure(), minuteDec, reunion.getDay(), reunion.getDateDay(), reunion.getMonth()));
         binding.textHost.setText(reunion.getHost());
 
         binding.textParticipants.setText(partFinal);

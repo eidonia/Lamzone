@@ -6,19 +6,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.bast.lamzone.R;
-import com.bast.lamzone.databinding.ClockFragBinding;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Clock extends DialogFragment {
 
