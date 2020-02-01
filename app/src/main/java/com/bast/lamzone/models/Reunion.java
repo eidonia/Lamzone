@@ -1,6 +1,11 @@
 package com.bast.lamzone.models;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Reunion {
+
+    private static final AtomicInteger counter = new AtomicInteger(0);
+    private int reuID;
     private int salle;
     private int heure;
     private int minute;
@@ -13,16 +18,26 @@ public class Reunion {
     private int year;
 
     public Reunion(int salle, int heure, int minute, String day, int dateDay, String month, int year, String host, String participants) {
-         this.salle = salle;
-         this.heure = heure;
-         this.minute = minute;
+        this.reuID = counter.incrementAndGet();
+        this.salle = salle;
+        this.heure = heure;
+        this.minute = minute;
         this.day = day;
         this.dateDay = dateDay;
         this.month = month;
         this.year = year;
-         this.host = host;
-         this.participants = participants;
+        this.host = host;
+        this.participants = participants;
      }
+
+
+    public int getReuID() {
+        return reuID;
+    }
+
+    public void setReuID(int reuID) {
+        this.reuID = reuID;
+    }
 
     public int getSalle() {
         return salle;

@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -22,17 +21,16 @@ import com.bast.lamzone.models.Time;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-    private ActivityMainBinding binding;
     ApiServiceReu apiService;
-    private List<Reunion> mReunion;
-    private List<Reunion> mFilteredReunion;
     String day;
     int dateDay;
     String month;
     int year;
-
+    private ActivityMainBinding binding;
+    private List<Reunion> mReunion;
+    private List<Reunion> mFilteredReunion;
     private CompoundButton.OnCheckedChangeListener ChangedChecked = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -42,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
             if (isChecked) {
                 for (int i = 0; i < mReunion.size(); i++) {
-                    if (salleInt == mReunion.get(i).getSalle()) {
+                    if (mReunion.get(i).getSalle() == salleInt) {
                         mFilteredReunion.add(mReunion.get(i));
                     }
                 }
                 onUpdate();
             } else {
-                for (int x = mFilteredReunion.size() - 1; x >= 0; x--) {
-                    if (salleInt == mFilteredReunion.get(x).getSalle()) {
-                        mFilteredReunion.remove(mFilteredReunion.get(x));
+                for (int i = mFilteredReunion.size() - 1; i >= 0; i--) {
+                    if (mFilteredReunion.get(i).getSalle() == salleInt) {
+                        mFilteredReunion.remove(mFilteredReunion.get(i));
                     }
                 }
                 onUpdate();
@@ -64,37 +62,21 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.rvList.setLayoutManager(new LinearLayoutManager(this));
-        binding.rvList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        binding.salle1.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle2.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle3.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle4.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle5.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle6.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle7.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle8.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle9.setOnCheckedChangeListener(ChangedChecked);
-        binding.salle10.setOnCheckedChangeListener(ChangedChecked);
-
-        initList();
-
         Time time = new Time();
         day = time.getDay();
         dateDay = time.getDateDay();
         month = time.getMonth();
         year = time.getYear();
 
+        binding.radioRoom.setOnCheckedChangeListener(this);
+        binding.radioDate.setOnCheckedChangeListener(this);
 
+        binding.rvList.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        initList();
+        binding.radioRoom.setChecked(true);
         binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
-        binding.btnFilterDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogDate();
-                mFilteredReunion.clear();
-            }
-        });
-
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,21 +157,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.month = monthString;
                 MainActivity.this.year = year;
                 binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
-                onUpdate();
-                for (int i = 0; i < mReunion.size(); i++) {
-                    String monthUp = mReunion.get(i).getMonth().substring(0, 1).toUpperCase() + mReunion.get(i).getMonth().substring(1);
-                    if (mReunion.get(i).getDateDay() == dateDay && monthUp.equals(monthString)) {
-                        mFilteredReunion.add(mReunion.get(i));
-                        Toast.makeText(MainActivity.this, "mFiltered" + mFilteredReunion.size(), Toast.LENGTH_LONG).show();
-                    }
-                }
-                for (int i = mFilteredReunion.size() - 1; i >= 0; i--) {
-                    String monthUp = mFilteredReunion.get(i).getMonth().substring(0, 1).toUpperCase() + mFilteredReunion.get(i).getMonth().substring(1);
-                    if (mFilteredReunion.get(i).getDateDay() != dateDay && !monthUp.equals(monthString)) {
-                        mFilteredReunion.remove(mFilteredReunion.get(i));
-                    }
-                }
-                onUpdate();
             }
         });
         date.show(fm, "date");
@@ -213,5 +180,88 @@ public class MainActivity extends AppCompatActivity {
         month = time.getMonth();
         year = time.getYear();
         binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
+    }
+
+    private void FilterDate(String month) {
+        for (int i = 0; i < mReunion.size(); i++) {
+            String monthUp = mReunion.get(i).getMonth().substring(0, 1).toUpperCase() + mReunion.get(i).getMonth().substring(1);
+            if (mReunion.get(i).getDateDay() == dateDay && monthUp.equals(month)) {
+                mFilteredReunion.add(mReunion.get(i));
+            }
+        }
+        onUpdate();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            if (buttonView.getId() == R.id.radioRoom) {
+                mFilteredReunion.clear();
+                ClickableRoom(0);
+                binding.radioDate.setChecked(false);
+                binding.salle1.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle2.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle3.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle4.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle5.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle6.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle7.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle8.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle9.setOnCheckedChangeListener(ChangedChecked);
+                binding.salle10.setOnCheckedChangeListener(ChangedChecked);
+            }
+            if (buttonView.getId() == R.id.radioDate) {
+                mFilteredReunion.clear();
+                ClickableRoom(1);
+                binding.radioRoom.setChecked(false);
+
+                binding.btnFilterDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialogDate();
+                    }
+                });
+
+                FilterDate(month);
+                onUpdate();
+            }
+        }
+    }
+
+    public void ClickableRoom(int i) {
+        if (i == 0) {
+            binding.salle1.setClickable(true);
+            binding.salle2.setClickable(true);
+            binding.salle3.setClickable(true);
+            binding.salle4.setClickable(true);
+            binding.salle5.setClickable(true);
+            binding.salle6.setClickable(true);
+            binding.salle7.setClickable(true);
+            binding.salle8.setClickable(true);
+            binding.salle9.setClickable(true);
+            binding.salle10.setClickable(true);
+
+        } else {
+            binding.salle1.setClickable(false);
+            binding.salle2.setClickable(false);
+            binding.salle3.setClickable(false);
+            binding.salle4.setClickable(false);
+            binding.salle5.setClickable(false);
+            binding.salle6.setClickable(false);
+            binding.salle7.setClickable(false);
+            binding.salle8.setClickable(false);
+            binding.salle9.setClickable(false);
+            binding.salle10.setClickable(false);
+            binding.salle1.setChecked(false);
+            binding.salle2.setChecked(false);
+            binding.salle3.setChecked(false);
+            binding.salle4.setChecked(false);
+            binding.salle5.setChecked(false);
+            binding.salle6.setChecked(false);
+            binding.salle7.setChecked(false);
+            binding.salle8.setChecked(false);
+            binding.salle9.setChecked(false);
+            binding.salle10.setChecked(false);
+        }
     }
 }
