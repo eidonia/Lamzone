@@ -3,9 +3,11 @@ package com.bast.lamzone.ui;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bast.lamzone.R;
 import com.bast.lamzone.db.ApiServiceReu;
@@ -20,6 +24,7 @@ import com.bast.lamzone.di.Di;
 import com.bast.lamzone.models.Reunion;
 import com.bast.lamzone.models.Time;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.button.MaterialButton;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,18 +33,15 @@ import java.util.List;
 public class CreateReuFrag extends BottomSheetDialogFragment {
 
     private Spinner spin;
-    private EditText editHost;
-    private EditText editParti;
+    private EditText editHost, editParti;
     private List<Reunion> mReunion;
+    private List<String> mParticipants = new ArrayList<>();
     private List<String> salle = new ArrayList<>();
-    private TextView btnHeure;
-    private TextView btnDay;
-    private int heure;
-    private int minutes;
-    private String day;
-    private int dateDay;
-    private String month;
-    private int year;
+    private TextView btnHeure, btnDay, textAddParti;
+    private MaterialButton buttonCreate, btnAddParti;
+    private int heure, minutes, year, dateDay;
+    private String day, month;
+    private RecyclerView rvListParti;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
@@ -52,8 +54,10 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         spin = view.findViewById(R.id.spinSalle);
         editHost = view.findViewById(R.id.editHost);
         editParti = view.findViewById(R.id.editParti);
-        TextView textCreate = view.findViewById(R.id.textCreate);
+        buttonCreate = view.findViewById(R.id.textCreate);
         btnDay = view.findViewById(R.id.btnCreaDate);
+        textAddParti = view.findViewById(R.id.textAddParti);
+        final InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         Time time = new Time();
         day = time.getDay();
@@ -66,37 +70,46 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         String minutesString = new DecimalFormat("00").format(minutes);
         btnDay.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
         btnHeure.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
-        btnHeure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogClock();
-            }
-        });
-        btnDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogDate();
-            }
-        });
+        btnHeure.setOnClickListener(v -> showDialogClock()); //Lambda
+        btnDay.setOnClickListener(v -> showDialogDate());
+        rvListParti = view.findViewById(R.id.rvListParti);
+
+        rvListParti.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         createSpinner(context, spin);
+        initList();
+
+        btnAddParti = view.findViewById(R.id.btnAddParti);
+        btnAddParti.setOnClickListener(v -> {
+            if (!isEmailValid(editParti.getText().toString())) {
+                textAddParti.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                textAddParti.setText(R.string.textAddParti);
+                inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+            } else {
+                textAddParti.setTextColor(getResources().getColor(android.R.color.black));
+                mParticipants.add(editParti.getText().toString());
+                inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                textAddParti.setText(R.string.textPartiAdd);
+                editParti.setText("");
+                initList();
+            }
+        });
 
 
-        textCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(spin.getSelectedItem() == "Selectionner une salle"){
-                    Toast.makeText(context, "Veuillez sélectionner une salle", Toast.LENGTH_SHORT).show();
-                }else {
+        buttonCreate.setOnClickListener(v -> {
+            if (spin.getSelectedItem() == "Selectionner une salle") {
+                Toast.makeText(context, "Veuillez sélectionner une salle", Toast.LENGTH_SHORT).show();
+            } else {
 
-                    String salleReplace = (String) spin.getSelectedItem();
-                    int salle = Integer.parseInt(salleReplace.substring(6));
-                    mReunion.add(new Reunion(salle, heure, minutes, day, dateDay, month, year, String.valueOf(editHost.getText()), String.valueOf(editParti.getText())));
-                    Toast.makeText(context, "Réunion créée", Toast.LENGTH_SHORT).show();
-                    dismiss();
-                    MainActivity act = (MainActivity) getActivity();
-                    act.onUpdate();
-                }
+                String salleReplace = (String) spin.getSelectedItem();
+                int salle = Integer.parseInt(salleReplace.substring(6));
+                mReunion.add(new Reunion(salle, heure, minutes, day, dateDay, month, year, String.valueOf(editHost.getText()), mParticipants));
+                Toast.makeText(context, "Réunion créée", Toast.LENGTH_SHORT).show();
+                dismiss();
+                MainActivity act = (MainActivity) getActivity();
+                act.onUpdate();
             }
         });
 
@@ -123,7 +136,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             @Override
             public boolean isEnabled(int position) {
                 for(int i = 0; i <mReunion.size(); i++) {
-                    if (mReunion.get(i).getHeure() == heure && mReunion.get(i).getSalle() == position) {
+                    if (mReunion.get(i).getHeure() == heure && mReunion.get(i).getDateDay() == dateDay && mReunion.get(i).getMonth() == month && mReunion.get(i).getSalle() == position) {
                         return false;
                     }
                 }
@@ -185,6 +198,14 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             }
         });
         date.show(fm, "date");
+    }
+
+    private boolean isEmailValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void initList() {
+        rvListParti.setAdapter(new ListPartiAdapter(mParticipants));
     }
 
 }

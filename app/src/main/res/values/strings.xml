@@ -14,6 +14,8 @@
     <string name="hintParti">Email des participants</string>
     <string name="textCreate">Créer la réunion</string>
     <string name="textCreaDate">%1$s %2$d %3$s %4$d</string>
+    <string name="textAddParti">Veuillez rentrer un email valide</string>
+    <string name="textPartiAdd">Participant ajouté</string>
 
     Filter Réunion
 

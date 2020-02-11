@@ -77,17 +77,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         initList();
         binding.radioRoom.setChecked(true);
         binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                    ViewGroup.LayoutParams params = binding.boxfilter.getLayoutParams();
-                    params.height = 1;
-                    binding.boxfilter.setLayoutParams(params);
-                }
-                onUpdate();
-                showDialogFrag();
+        binding.fab.setOnClickListener(view -> {
+            if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                ViewGroup.LayoutParams params = binding.boxfilter.getLayoutParams();
+                params.height = 0;
+                binding.boxfilter.setLayoutParams(params);
             }
+            onUpdate();
+            showDialogFrag();
         });
     }
 
@@ -97,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         mFilteredReunion = apiService.getReunionFiltered();
 
         if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            binding.rvList.setAdapter(new ReunionAdaptater(mFilteredReunion, 1, this));
+            binding.rvList.setAdapter(new ReunionAdaptater(mFilteredReunion, 1, this, this));
         } else {
-            binding.rvList.setAdapter(new ReunionAdaptater(mReunion, 0, this));
+            binding.rvList.setAdapter(new ReunionAdaptater(mReunion, 0, this, this));
         }
     }
 
@@ -263,5 +260,15 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             binding.salle9.setChecked(false);
             binding.salle10.setChecked(false);
         }
+    }
+
+    public void DltReu(Reunion reunion, int i) {
+        if (i == 0) {
+            apiService.deleteReunion(reunion);
+        } else {
+            apiService.deleteReunion(reunion);
+            apiService.deleteReunionFilt(reunion);
+        }
+        onUpdate();
     }
 }

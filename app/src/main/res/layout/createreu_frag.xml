@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingBottom="30dp"
     tools:context=".ui.CreateReuFrag">
 
     <TextView
@@ -13,21 +13,21 @@
         android:layout_height="wrap_content"
         android:text="@string/CreerReu"
         android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/textCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Enregistrer"
-        android:textSize="16sp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingTop="3dp"
-        android:paddingBottom="5dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/colorBtnCreate"
-        android:background="@drawable/btn_border"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/txtReu"
         app:layout_constraintTop_toTopOf="@id/txtReu"
         app:layout_constraintBottom_toBottomOf="@id/txtReu"/>
@@ -36,7 +36,7 @@
         android:id="@+id/viewDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="15dp"
+        android:layout_marginTop="20dp"
         android:background="#959292"
         app:layout_constraintTop_toBottomOf="@id/txtReu" />
 
@@ -44,6 +44,7 @@
         android:id="@+id/imgClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:background="@drawable/ic_access_time_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/btnCreaDate"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:textSize="20sp"
+        android:paddingEnd="10dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewDivider" />
@@ -75,7 +77,7 @@
         android:id="@+id/viewDivider2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
         android:background="#959292"
         app:layout_constraintTop_toBottomOf="@id/btnHeureCrea" />
 
@@ -83,6 +85,7 @@
         android:id="@+id/imgSalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:background="@drawable/ic_business_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/spinSalle"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +106,7 @@
         android:id="@+id/viewDivider3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
         android:background="#959292"
         app:layout_constraintTop_toBottomOf="@id/spinSalle" />
 
@@ -111,7 +114,8 @@
         android:id="@+id/imgHost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewDivider3"
         android:background="@drawable/ic_person_black_24dp"/>
@@ -132,7 +136,7 @@
         android:id="@+id/viewDivider4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
         android:background="#959292"
         app:layout_constraintTop_toBottomOf="@id/editHost" />
 
@@ -140,10 +144,11 @@
         android:id="@+id/imgParti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/ic_group_black_24dp"
         app:layout_constraintTop_toBottomOf="@id/viewDivider4"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editParti"
@@ -156,5 +161,41 @@
         app:layout_constraintStart_toEndOf="@id/imgParti"
         android:background="#02FAF9F9"
         android:inputType="textEmailAddress" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddParti"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:icon="@drawable/ic_add_white_24dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/editParti"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toEndOf="@id/editParti"
+        app:layout_constraintTop_toTopOf="@id/editParti" />
+
+    <TextView
+        android:id="@+id/textAddParti"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/editParti"
+        app:layout_constraintStart_toStartOf="@id/editParti"
+        app:layout_constraintTop_toBottomOf="@id/editParti" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListParti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/textAddParti"
+        app:layout_constraintTop_toBottomOf="@id/textAddParti"
+        tools:listitem="@layout/list_items_parti" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

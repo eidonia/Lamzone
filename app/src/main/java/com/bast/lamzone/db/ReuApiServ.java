@@ -19,4 +19,14 @@ public class ReuApiServ implements ApiServiceReu{
         return reunionFiltered;
     }
 
+    @Override
+    public void deleteReunion(Reunion reunion) {
+        this.reunion.remove(reunion);
+    }
+
+    @Override
+    public void deleteReunionFilt(Reunion reunion) {
+        reunionFiltered.remove(reunion);
+    }
+
 }

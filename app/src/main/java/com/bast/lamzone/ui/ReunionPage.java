@@ -2,9 +2,10 @@ package com.bast.lamzone.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bast.lamzone.R;
 import com.bast.lamzone.databinding.ActivityReunionPageBinding;
@@ -24,6 +25,7 @@ public class ReunionPage extends AppCompatActivity {
     ApiServiceReu apiService;
     List<Reunion> lReu;
     Reunion reunion;
+    RecyclerView rvListparticipants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +46,13 @@ public class ReunionPage extends AppCompatActivity {
         }
         reunion = lReu.get(itemPos);
 
-        String part = reunion.getParticipants().replace(", ", "\n- ");
-        String startChar = "- ";
-        String partFinal = startChar + part;
+
 
         final String minuteDec = new DecimalFormat("00").format(reunion.getMinute());
 
         setSupportActionBar(binding.toolBar);
         binding.toolBar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        binding.toolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ReunionPage.this.finish();
-            }
-        });
+        binding.toolBar.setNavigationOnClickListener(v -> ReunionPage.this.finish());
 
         binding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 
@@ -92,14 +87,10 @@ public class ReunionPage extends AppCompatActivity {
         binding.gridNom.setText(getResources().getString(R.string.salleNumber, reunion.getSalle()));
         binding.textHour.setText(getResources().getString(R.string.heureReunion, reunion.getHeure(), minuteDec, reunion.getDay(), reunion.getDateDay(), reunion.getMonth()));
         binding.textHost.setText(reunion.getHost());
-
-        binding.textParticipants.setText(partFinal);
         binding.textTitreAbout.setText(R.string.textReunion);
         binding.textAbout.setText(R.string.lorem_ipsum);
-
-
-
-
+        binding.rvListParticipants.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvListParticipants.setAdapter(new ListPartiAdapter(reunion.getParticipants()));
 
     }
 }

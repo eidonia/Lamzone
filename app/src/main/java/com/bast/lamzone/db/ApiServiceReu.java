@@ -9,4 +9,8 @@ public interface ApiServiceReu {
     List<Reunion> getReunion();
 
     List<Reunion> getReunionFiltered();
+
+    void deleteReunion(Reunion reunion);
+
+    void deleteReunionFilt(Reunion reunion);
 }
