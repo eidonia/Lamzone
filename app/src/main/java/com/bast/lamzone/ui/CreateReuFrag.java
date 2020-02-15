@@ -37,9 +37,9 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
     private List<Reunion> mReunion;
     private List<String> mParticipants = new ArrayList<>();
     private List<String> salle = new ArrayList<>();
-    private TextView btnHeure, btnDay, textAddParti;
+    private TextView btnHeureD, btnHeureF, btnDay, textAddParti, textReuD, textReuF;
     private MaterialButton buttonCreate, btnAddParti;
-    private int heure, minutes, year, dateDay;
+    private int heure, minutes, year, dateDay, heureF, minutesF;
     private String day, month;
     private RecyclerView rvListParti;
 
@@ -50,7 +50,12 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
 
         ApiServiceReu apiService = Di.getApiServiceReu();
         mReunion = apiService.getReunion();
-        btnHeure = view.findViewById(R.id.btnHeureCrea);
+        textReuD = view.findViewById(R.id.textHeureDebut);
+        textReuD.setText(getResources().getString(R.string.textHeureDebut));
+        textReuF = view.findViewById(R.id.textHeureFin);
+        textReuF.setText(getResources().getString(R.string.textHeureFin));
+        btnHeureD = view.findViewById(R.id.btnHeureCreaDebut);
+        btnHeureF = view.findViewById(R.id.btnHeureCreaFin);
         spin = view.findViewById(R.id.spinSalle);
         editHost = view.findViewById(R.id.editHost);
         editParti = view.findViewById(R.id.editParti);
@@ -66,11 +71,17 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         year = time.getYear();
         heure = time.getHeure();
         minutes = time.getMinutes();
+        heureF = time.getHeure() + 1;
+        minutesF = time.getMinutes();
         String heureString = new DecimalFormat("00").format(heure);
         String minutesString = new DecimalFormat("00").format(minutes);
         btnDay.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
-        btnHeure.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
-        btnHeure.setOnClickListener(v -> showDialogClock()); //Lambda
+        btnHeureD.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+        btnHeureD.setOnClickListener(v -> showDialogClock(0));
+        String heureStringF = new DecimalFormat("00").format(heureF);
+        String minutesStringF = new DecimalFormat("00").format(minutesF);
+        btnHeureF.setText(getResources().getString(R.string.txtHeure, heureStringF, minutesStringF));
+        btnHeureF.setOnClickListener(v -> showDialogClock(1));
         btnDay.setOnClickListener(v -> showDialogDate());
         rvListParti = view.findViewById(R.id.rvListParti);
 
@@ -105,11 +116,10 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
 
                 String salleReplace = (String) spin.getSelectedItem();
                 int salle = Integer.parseInt(salleReplace.substring(6));
-                mReunion.add(new Reunion(salle, heure, minutes, day, dateDay, month, year, String.valueOf(editHost.getText()), mParticipants));
+                mReunion.add(new Reunion(salle, heure, minutes, heureF, minutesF, day, dateDay, month, year, String.valueOf(editHost.getText()), mParticipants));
                 Toast.makeText(context, "Réunion créée", Toast.LENGTH_SHORT).show();
                 dismiss();
-                MainActivity act = (MainActivity) getActivity();
-                act.onUpdate();
+                MainFragment.getInstance().onUpdate();
             }
         });
 
@@ -136,7 +146,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             @Override
             public boolean isEnabled(int position) {
                 for(int i = 0; i <mReunion.size(); i++) {
-                    if (mReunion.get(i).getHeure() == heure && mReunion.get(i).getDateDay() == dateDay && mReunion.get(i).getMonth() == month && mReunion.get(i).getSalle() == position) {
+                    if (((mReunion.get(i).getHeure() <= heure && mReunion.get(i).getMinute() <= minutesF && mReunion.get(i).getHeureF() >= heure && mReunion.get(i).getMinuteF() >= minutes) || (mReunion.get(i).getHeure() <= heureF && mReunion.get(i).getHeureF() >= heureF)) && mReunion.get(i).getDateDay() == dateDay && mReunion.get(i).getMonth() == month && mReunion.get(i).getSalle() == position) {
                         return false;
                     }
                 }
@@ -162,18 +172,22 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
 
     }
 
-    private void showDialogClock() {
+    private void showDialogClock(int i) {
         FragmentManager fm = getFragmentManager();
         Clock clock = new Clock();
-        clock.setOnTimeChooser(new Clock.OnTimeChooser() {
-
-            @Override
-            public void setOnTimeChooser(int heure, int minutes) {
+        clock.setOnTimeChooser((heure, minutes) -> {
+            if (i == 0) {
                 String heureString = new DecimalFormat("00").format(heure);
                 String minutesString = new DecimalFormat("00").format(minutes);
-                btnHeure.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+                btnHeureD.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
                 CreateReuFrag.this.heure = heure;
                 CreateReuFrag.this.minutes = minutes;
+            } else {
+                String heureString = new DecimalFormat("00").format(heure);
+                String minutesString = new DecimalFormat("00").format(minutes);
+                btnHeureF.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+                CreateReuFrag.this.heureF = heure;
+                CreateReuFrag.this.minutesF = minutes;
             }
         });
         clock.show(fm, "clock");
@@ -182,20 +196,16 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
     private void showDialogDate() {
         FragmentManager fm = getFragmentManager();
         Date date = new Date();
-        date.setOnDateChooser(new Date.OnDateChooser() {
+        date.setOnDateChooser((day, dateDay, month, year) -> {
+            Time time = new Time();
+            String dayString = time.getDayInt(day);
+            CreateReuFrag.this.day = dayString;
+            CreateReuFrag.this.dateDay = dateDay;
+            String monthString = time.getMonthInt(month);
+            CreateReuFrag.this.month = monthString;
+            CreateReuFrag.this.year = year;
+            btnDay.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
 
-            @Override
-            public void setOnDateChooser(int day, int dateDay, int month, int year) {
-                Time time = new Time();
-                String dayString = time.getDayInt(day);
-                CreateReuFrag.this.day = dayString;
-                CreateReuFrag.this.dateDay = dateDay;
-                String monthString = time.getMonthInt(month);
-                CreateReuFrag.this.month = monthString;
-                CreateReuFrag.this.year = year;
-                btnDay.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
-
-            }
         });
         date.show(fm, "date");
     }

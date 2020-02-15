@@ -53,25 +53,54 @@
     <TextView
         android:id="@+id/btnCreaDate"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toStartOf="@id/btnHeureCrea"
         app:layout_constraintStart_toEndOf="@id/imgClock"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintTop_toBottomOf="@id/viewDivider" />
 
+    <TextView
+        android:id="@+id/textHeureDebut"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/btnHeureCreaDebut"
+        app:layout_constraintEnd_toStartOf="@id/btnHeureCreaDebut"
+        app:layout_constraintTop_toTopOf="@id/btnHeureCreaDebut" />
+
 
     <TextView
-        android:id="@+id/btnHeureCrea"
+        android:id="@+id/btnHeureCreaDebut"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:textSize="20sp"
         android:paddingEnd="10dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewDivider" />
+        app:layout_constraintTop_toBottomOf="@id/btnCreaDate" />
+
+    <TextView
+        android:id="@+id/textHeureFin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/btnHeureCreaFin"
+        app:layout_constraintEnd_toStartOf="@id/btnHeureCreaFin"
+        app:layout_constraintStart_toStartOf="@id/textHeureDebut"
+        app:layout_constraintTop_toTopOf="@id/btnHeureCreaFin" />
+
+
+    <TextView
+        android:id="@+id/btnHeureCreaFin"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:paddingEnd="10dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnHeureCreaDebut" />
 
     <View
         android:id="@+id/viewDivider2"
@@ -79,7 +108,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
         android:background="#959292"
-        app:layout_constraintTop_toBottomOf="@id/btnHeureCrea" />
+        app:layout_constraintTop_toBottomOf="@id/btnHeureCreaFin" />
 
     <ImageView
         android:id="@+id/imgSalle"

@@ -10,6 +10,8 @@ public class Reunion {
     private int salle;
     private int heure;
     private int minute;
+    private int heureF;
+    private int minuteF;
     private String host;
     private List<String> participants;
     private int minutes;
@@ -18,11 +20,13 @@ public class Reunion {
     private String month;
     private int year;
 
-    public Reunion(int salle, int heure, int minute, String day, int dateDay, String month, int year, String host, List<String> participants) {
+    public Reunion(int salle, int heure, int minute, int heureF, int minuteF, String day, int dateDay, String month, int year, String host, List<String> participants) {
         this.reuID = counter.incrementAndGet();
         this.salle = salle;
         this.heure = heure;
         this.minute = minute;
+        this.heureF = heureF;
+        this.minuteF = minuteF;
         this.day = day;
         this.dateDay = dateDay;
         this.month = month;
@@ -64,6 +68,22 @@ public class Reunion {
         this.minute = minute;
     }
 
+    public int getHeureF() {
+        return heureF;
+    }
+
+    public void setHeureF(int heureF) {
+        this.heureF = heureF;
+    }
+
+    public int getMinuteF() {
+        return minuteF;
+    }
+
+    public void setMinuteF(int minuteF) {
+        this.minuteF = minuteF;
+    }
+
     public String getHost() {
         return host;
     }
@@ -78,10 +98,6 @@ public class Reunion {
 
     public void setParticipants(List<String> participants) {
         this.participants = participants;
-    }
-
-    public int getMinutes() {
-        return minutes;
     }
 
     public void setMinutes(int minutes) {

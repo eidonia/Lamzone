@@ -1,7 +1,6 @@
 package com.bast.lamzone.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bast.lamzone.R;
-import com.bast.lamzone.db.ApiServiceReu;
-import com.bast.lamzone.di.Di;
 import com.bast.lamzone.models.Reunion;
 
 import java.text.DecimalFormat;
@@ -26,26 +23,18 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
     private List<Reunion> mReunion;
     private Context context;
     private int numList;
+    MainFragment mainFragment;
     MainActivity mainActivity;
-    private List<Reunion> mReu;
-    private ApiServiceReu apiService;
     private String listParti;
+    private ReuPageLoader reuPageLoader;
 
-    public ReunionAdaptater(List<Reunion> mReunion, int numList, Context context, MainActivity mainActivity) {
+    public ReunionAdaptater(List<Reunion> mReunion, int numList, Context context, MainFragment mainFragment, MainActivity mainActivity, ReuPageLoader reuPageLoader) {
         this.mReunion = mReunion;
         this.context = context;
         this.numList = numList;
         this.mainActivity = mainActivity;
-        apiService = Di.getApiServiceReu();
-        mReu = apiService.getReunion();
-    }
-
-    @NonNull
-    @Override
-    public ReunionAdaptater.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent,false);
-
-        return new ViewHolder(view);
+        this.mainFragment = mainFragment;
+        this.reuPageLoader = reuPageLoader;
     }
 
     @Override
@@ -70,8 +59,23 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
         }
         holder.txtParti.setText(listParti);
 
-        holder.btnDelete.setOnClickListener(v -> mainActivity.DltReu(reu, numList));
+        holder.btnDelete.setOnClickListener(v -> {
+            mainFragment.DltReu(reu, numList);
+            mainActivity.checkIfDel(position);
+        });
 
+    }
+
+    @NonNull
+    @Override
+    public ReunionAdaptater.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
+
+        return new ViewHolder(view);
+    }
+
+    public interface ReuPageLoader {
+        void load(ArrayList<Integer> numAndPosList);
     }
 
     @Override
@@ -99,10 +103,7 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
                 ArrayList<Integer> posAndNumList = new ArrayList<>();
                 posAndNumList.add(itemPos);
                 posAndNumList.add(numList);
-                Context ctx = v.getContext();
-                Intent intent = new Intent(ctx, ReunionPage.class);
-                intent.putIntegerArrayListExtra("POSREU", posAndNumList);
-                ctx.startActivity(intent);
+                reuPageLoader.load(posAndNumList);
 
             });
         }
