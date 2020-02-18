@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements ReunionAdaptater.
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.listFragment, new MainFragment())

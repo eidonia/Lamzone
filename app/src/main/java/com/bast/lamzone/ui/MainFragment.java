@@ -1,5 +1,6 @@
 package com.bast.lamzone.ui;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -89,6 +91,7 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
         binding.radioDate.setOnCheckedChangeListener(this);
 
 
+
         binding.rvList.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
@@ -124,6 +127,7 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.menu_main, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -146,9 +150,30 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
                 RaZFilter();
                 onUpdate();
             }
+        } else if (id == R.id.darkmode) {
+            switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                case Configuration.UI_MODE_NIGHT_YES:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    break;
+                case Configuration.UI_MODE_NIGHT_NO:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                menu.findItem(R.id.darkmode).setIcon(R.drawable.ic_brightness_7_black_24dp);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                menu.findItem(R.id.darkmode).setIcon(R.drawable.ic_brightness_3_black_24dp);
+                break;
+        }
     }
 
     public void showDialogFrag() {
@@ -226,12 +251,7 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
                 ClickableRoom(1);
                 binding.radioRoom.setChecked(false);
 
-                binding.btnFilterDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showDialogDate();
-                    }
-                });
+                binding.btnFilterDate.setOnClickListener(v -> showDialogDate());
 
                 FilterDate(month);
                 onUpdate();

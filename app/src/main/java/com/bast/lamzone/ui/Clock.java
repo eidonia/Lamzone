@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Clock extends DialogFragment {
 
     TimePicker timePicker;
-    TextView txtOK;
+    TextView txtOK, txtCancel;
     OnTimeChooser onTimeChooser;
 
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -35,29 +35,30 @@ public class Clock extends DialogFragment {
 
 
         txtOK = view.findViewById(R.id.txtOK);
-        txtOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        txtOK.setOnClickListener(v -> {
 
-                int heure;
-                int minutes;
+            int heure;
+            int minutes;
 
-                if (Build.VERSION.SDK_INT < 23){
-                    heure = timePicker.getCurrentHour();
-                    minutes = timePicker.getCurrentMinute();
-                }else{
-                    heure = timePicker.getHour();
-                    minutes = timePicker.getMinute();
-                }
-
-                ArrayList<Integer> timeClock = new ArrayList<>();
-                timeClock.add(heure);
-                timeClock.add(minutes);
-
-                onTimeChooser.setOnTimeChooser(heure, minutes);
-                dismiss();
+            if (Build.VERSION.SDK_INT < 23) {
+                heure = timePicker.getCurrentHour();
+                minutes = timePicker.getCurrentMinute();
+            } else {
+                heure = timePicker.getHour();
+                minutes = timePicker.getMinute();
             }
+
+            ArrayList<Integer> timeClock = new ArrayList<>();
+            timeClock.add(heure);
+            timeClock.add(minutes);
+
+            onTimeChooser.setOnTimeChooser(heure, minutes);
+            dismiss();
         });
+
+        txtCancel = view.findViewById(R.id.txtCancel);
+        txtCancel.setOnClickListener(v -> dismiss());
+
 
 
 

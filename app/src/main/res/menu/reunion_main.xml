@@ -2,12 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.bast.lamzone.ui.MainActivity">
-    <item
-        android:id="@+id/action_filter"
-        android:orderInCategory="100"
-        android:title="@string/filter"
-        android:icon="@drawable/ic_filter_list_black_24dp"
-        app:showAsAction="always" />
 
     <item
         android:id="@+id/darkmode"

@@ -1,25 +1,61 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.App" parent="Theme.AppCompat.DayNight">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/textFragColor</item>
+        <item name="color">@color/colorIcon</item>
+    </style>
+
+    <style name="Theme.Reunion" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:datePickerStyle">@style/MyDatePicker</item>
+        <item name="color">@color/colorCircle</item>
+    </style>
+
+    <style name="Theme.Frag" parent="Theme.AppCompat.DayNight.Dialog">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/textFragColor</item>
+        <item name="android:background">@color/backFragColor</item>
+        <item name="color">@color/colorIcon</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/Theme.AppCompat.DayNight">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="backReunion" parent="@style/Theme.Reunion">
+        <item name="android:backgroundTint">@color/colorPopUp</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="ButtonTheme" parent="@style/Theme.AppCompat.DayNight">
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textWhiteColor</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="MyDatePicker" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="android:textColorPrimary">#000</item>
+    </style>
 
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="android:windowBackground">@drawable/popup_background</item>
         <item name="android:colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:backgroundTint">@color/colorPopUp</item>
     </style>
 
 </resources>

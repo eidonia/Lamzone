@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reuLayoutBack"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBgReuPage"
+    android:theme="@style/Theme.Reunion"
     tools:context=".ui.ReunionPage">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBgReuPage"
         android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <LinearLayout
@@ -24,7 +25,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorBgReuPage"
                 android:orientation="vertical">
 
                 <GridLayout
@@ -35,6 +35,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="30dp"
                     android:background="@drawable/border_line"
+                    android:theme="@style/backReunion"
                     android:columnCount="2"
                     android:padding="20dp"
                     android:rowCount="5">
@@ -46,7 +47,6 @@
                         android:layout_row="0"
                         android:layout_columnSpan="2"
                         android:paddingBottom="10dp"
-                        android:textColor="@android:color/black"
                         android:textSize="30sp" />
 
                     <View
@@ -55,7 +55,6 @@
                         android:layout_row="1"
                         android:layout_columnSpan="2"
                         android:background="#6DEAE4E4" />
-
 
                     <ImageView
                         android:id="@+id/imageHost"
@@ -76,7 +75,6 @@
                         android:layout_marginStart="15dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
-                        android:textColor="@android:color/tertiary_text_dark"
                         android:textSize="18sp" />
 
                     <ImageView
@@ -98,7 +96,6 @@
                         android:layout_marginStart="15dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
-                        android:textColor="@android:color/tertiary_text_dark"
                         android:textSize="18sp" />
 
                     <ImageView
@@ -134,6 +131,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/border_line"
+                    android:theme="@style/backReunion"
                     android:orientation="vertical"
                     android:padding="15dp">
 
@@ -143,7 +141,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_marginBottom="10dp"
-                        android:textColor="@android:color/black"
                         android:textSize="30sp" />
 
                     <View
@@ -157,11 +154,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="10dp"
-                        android:textColor="@android:color/tertiary_text_dark"
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

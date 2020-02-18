@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reuLayoutBack"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.Reunion"
+    tools:context=".ui.ReunionPage">
+
+    <ScrollView
+        android:id="@+id/scrollLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toStartOf="@id/scrollRight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="15dp">
+
+            <TextView
+                android:id="@+id/gridNom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_columnSpan="2"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/border_line"
+                android:gravity="center"
+                android:padding="20dp"
+                android:paddingBottom="10dp"
+                android:textSize="30sp"
+                android:theme="@style/backReunion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <GridLayout
+                android:id="@+id/grid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/border_line"
+                android:columnCount="2"
+                android:padding="20dp"
+                android:rowCount="5"
+                android:theme="@style/backReunion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/gridNom">
+
+                <ImageView
+                    android:id="@+id/imageHost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="2"
+                    android:layout_column="0"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:src="@drawable/ic_person_black_24dp" />
+
+                <TextView
+                    android:id="@+id/textHost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="2"
+                    android:layout_column="1"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/imageHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="3"
+                    android:layout_column="0"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:src="@drawable/ic_access_time_black_24dp" />
+
+                <TextView
+                    android:id="@+id/textHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="3"
+                    android:layout_column="1"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+
+            </GridLayout>
+
+            <LinearLayout
+                android:id="@+id/linearRv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/border_line"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:theme="@style/backReunion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/grid">
+
+                <TextView
+                    android:id="@+id/imageParticipants"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="5dp"
+                    android:text="Participants"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvListParticipants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="5dp"
+                    tools:listitem="@layout/list_items_parti" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/scrollRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/scrollLeft"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/border_line"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:theme="@style/backReunion"
+            app:layout_constraintTop_toBottomOf="@id/linearRv">
+
+            <TextView
+                android:id="@+id/textTitreAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="30sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#6DEAE4E4" />
+
+            <com.bast.lamzone.ExpandableText
+                android:id="@+id/textAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

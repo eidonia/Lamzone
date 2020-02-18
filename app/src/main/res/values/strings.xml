@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Ma réu</string>
     <string name="reunion">Salle %1$d - %2$dh%3$s - %4$s</string>
-    <string name="reunionPage">Salle %1$d - %2$dh%3$s - %4$d %5$s - %6$s</string>
+    <string name="reunionPage">Salle %1$d - %2$dh%3$s - %4$s %5$d - %6$s</string>
 
     Créer la réunion
 
@@ -22,6 +22,7 @@
     Filter Réunion
 
     <string name="filter">Filtre</string>
+    <string name="darkmode">Dark mode</string>
     <string name="txtChoixSalle">Quelles salles voulez vous voir?</string>
     <string name="txtheureReu">Date réunion</string>
     <string name="txtHost">Organisateur de la réunion</string>

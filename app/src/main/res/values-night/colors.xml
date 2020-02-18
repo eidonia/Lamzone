@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#162681</color>
+    <color name="colorPrimary">#014C7A</color>
+    <color name="colorAccent">#04AA9A</color>
+    <color name="colorList1">#7A4F4F</color>
+    <color name="colorList2">#644968</color>
+    <color name="textWhiteColor">#FFFFFF</color>
+    <color name="textFragColor">#E3E0E0</color>
+    <color name="backFragColor">#706E6E</color>
+    <color name="colorPopUp">#AAA7A7</color>
+    <color name="colorIcon">#FFFFFF</color>
+    <color name="colorCircle">#000</color>
+</resources>

@@ -7,4 +7,10 @@
     <color name="colorList2">#CE93D8</color>
     <color name="colorBtnCreate">#F7F8F8</color>
     <color name="colorBgReuPage">#FDBFC1C3</color>
+    <color name="textWhiteColor">#FFFFFF</color>
+    <color name="textFragColor">#000000</color>
+    <color name="backFragColor">#FFFFFF</color>
+    <color name="colorPopUp">#FFFFFF</color>
+    <color name="colorIcon">#000000</color>
+    <color name="colorCircle">#000</color>
 </resources>

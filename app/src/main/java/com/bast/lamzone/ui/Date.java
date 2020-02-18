@@ -31,19 +31,19 @@ public class Date extends DialogFragment {
         datePicker = view.findViewById(R.id.datePicker);
 
         TextView txtOK = view.findViewById(R.id.txtOK);
-        txtOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        txtOK.setOnClickListener(v -> {
 
-                int dateDay = datePicker.getDayOfMonth();
-                int month = datePicker.getMonth();
-                int year = datePicker.getYear();
-                Calendar cal = new GregorianCalendar(year, month, dateDay);
-                int day = cal.get(Calendar.DAY_OF_WEEK);
-                onDateChooser.setOnDateChooser(day, dateDay, month, year);
-                dismiss();
-            }
+            int dateDay = datePicker.getDayOfMonth();
+            int month = datePicker.getMonth();
+            int year = datePicker.getYear();
+            Calendar cal = new GregorianCalendar(year, month, dateDay);
+            int day = cal.get(Calendar.DAY_OF_WEEK);
+            onDateChooser.setOnDateChooser(day, dateDay, month, year);
+            dismiss();
         });
+
+        TextView textCancel = view.findViewById(R.id.txtCancel);
+        textCancel.setOnClickListener(v -> dismiss());
 
 
         return builder.create();

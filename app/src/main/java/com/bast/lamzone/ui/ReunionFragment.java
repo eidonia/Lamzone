@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -25,6 +26,7 @@ public class ReunionFragment extends Fragment {
     Reunion reunion;
     int itemPos;
     private FragmentReunionBinding binding;
+    ConstraintLayout layoutBack;
 
     public ReunionFragment() {
     }
@@ -52,7 +54,6 @@ public class ReunionFragment extends Fragment {
         mPosandNumList = getArguments().getIntegerArrayList("POSREU");
         itemPos = mPosandNumList.get(0);
         int numList = mPosandNumList.get(1);
-
         apiService = Di.getApiServiceReu();
         if (numList == 0) {
             lReu = apiService.getReunion();
@@ -60,9 +61,15 @@ public class ReunionFragment extends Fragment {
             lReu = apiService.getReunionFiltered();
         }
         reunion = lReu.get(itemPos);
-
-
         final String minuteDec = new DecimalFormat("00").format(reunion.getMinute());
+
+        layoutBack = view.findViewById(R.id.reuLayoutBack);
+
+        if (reunion.getSalle() % 2 == 0) {
+            layoutBack.setBackgroundColor(getResources().getColor(R.color.colorList1));
+        } else {
+            layoutBack.setBackgroundColor(getResources().getColor(R.color.colorList2));
+        }
 
         binding.gridNom.setText(getResources().getString(R.string.salleNumber, reunion.getSalle()));
         binding.textHour.setText(getResources().getString(R.string.heureReunion, reunion.getHeure(), minuteDec, reunion.getDay(), reunion.getDateDay(), reunion.getMonth()));
@@ -71,5 +78,11 @@ public class ReunionFragment extends Fragment {
         binding.textAbout.setText(R.string.lorem_ipsum);
         binding.rvListParticipants.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvListParticipants.setAdapter(new ListPartiAdapter(reunion.getParticipants()));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

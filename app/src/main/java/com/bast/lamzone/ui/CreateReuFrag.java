@@ -7,24 +7,24 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bast.lamzone.R;
+import com.bast.lamzone.databinding.CreatereuFragBinding;
 import com.bast.lamzone.db.ApiServiceReu;
 import com.bast.lamzone.di.Di;
 import com.bast.lamzone.models.Reunion;
 import com.bast.lamzone.models.Time;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButton;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -32,100 +32,68 @@ import java.util.List;
 
 public class CreateReuFrag extends BottomSheetDialogFragment {
 
-    private Spinner spin;
-    private EditText editHost, editParti;
     private List<Reunion> mReunion;
     private List<String> mParticipants = new ArrayList<>();
     private List<String> salle = new ArrayList<>();
-    private TextView btnHeureD, btnHeureF, btnDay, textAddParti, textReuD, textReuF;
-    private MaterialButton buttonCreate, btnAddParti;
     private int heure, minutes, year, dateDay, heureF, minutesF;
     private String day, month;
-    private RecyclerView rvListParti;
+    BottomSheetBehavior bottomSheetBehavior;
+    CreatereuFragBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
-        final Context context = getActivity();
-        View view = inflater.inflate(R.layout.createreu_frag, null);
+        binding = CreatereuFragBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
 
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        final Context context = getActivity();
         ApiServiceReu apiService = Di.getApiServiceReu();
         mReunion = apiService.getReunion();
-        textReuD = view.findViewById(R.id.textHeureDebut);
-        textReuD.setText(getResources().getString(R.string.textHeureDebut));
-        textReuF = view.findViewById(R.id.textHeureFin);
-        textReuF.setText(getResources().getString(R.string.textHeureFin));
-        btnHeureD = view.findViewById(R.id.btnHeureCreaDebut);
-        btnHeureF = view.findViewById(R.id.btnHeureCreaFin);
-        spin = view.findViewById(R.id.spinSalle);
-        editHost = view.findViewById(R.id.editHost);
-        editParti = view.findViewById(R.id.editParti);
-        buttonCreate = view.findViewById(R.id.textCreate);
-        btnDay = view.findViewById(R.id.btnCreaDate);
-        textAddParti = view.findViewById(R.id.textAddParti);
-        final InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        Time time = new Time();
-        day = time.getDay();
-        dateDay = time.getDateDay();
-        month = time.getMonth();
-        year = time.getYear();
-        heure = time.getHeure();
-        minutes = time.getMinutes();
-        heureF = time.getHeure() + 1;
-        minutesF = time.getMinutes();
+        createTime();
+        binding.textHeureDebut.setText(getResources().getString(R.string.textHeureDebut));
+        binding.textHeureFin.setText(getResources().getString(R.string.textHeureFin));
         String heureString = new DecimalFormat("00").format(heure);
         String minutesString = new DecimalFormat("00").format(minutes);
-        btnDay.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
-        btnHeureD.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
-        btnHeureD.setOnClickListener(v -> showDialogClock(0));
+        binding.btnCreaDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
+        binding.btnHeureCreaDebut.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+        binding.btnHeureCreaDebut.setOnClickListener(v -> showDialogClock(0));
         String heureStringF = new DecimalFormat("00").format(heureF);
         String minutesStringF = new DecimalFormat("00").format(minutesF);
-        btnHeureF.setText(getResources().getString(R.string.txtHeure, heureStringF, minutesStringF));
-        btnHeureF.setOnClickListener(v -> showDialogClock(1));
-        btnDay.setOnClickListener(v -> showDialogDate());
-        rvListParti = view.findViewById(R.id.rvListParti);
+        binding.btnHeureCreaFin.setText(getResources().getString(R.string.txtHeure, heureStringF, minutesStringF));
+        binding.btnHeureCreaFin.setOnClickListener(v -> showDialogClock(1));
+        binding.btnCreaDate.setOnClickListener(v -> showDialogDate());
+        binding.rvListParti.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        rvListParti.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        createSpinner(context, spin);
+        createSpinner(context, binding.spinSalle);
         initList();
 
-        btnAddParti = view.findViewById(R.id.btnAddParti);
-        btnAddParti.setOnClickListener(v -> {
-            if (!isEmailValid(editParti.getText().toString())) {
-                textAddParti.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-                textAddParti.setText(R.string.textAddParti);
-                inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        binding.btnAddParti.setOnClickListener(v -> addParti());
 
+        binding.btnCreate.setOnClickListener(v -> {
+            if (binding.spinSalle.getSelectedItem() == "Selectionner une salle" || binding.editHost.getText().toString().equals("") || mParticipants.size() == 0) {
+                Toast.makeText(context, "Veuillez remplir les champs", Toast.LENGTH_SHORT).show();
             } else {
-                textAddParti.setTextColor(getResources().getColor(android.R.color.black));
-                mParticipants.add(editParti.getText().toString());
-                inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                textAddParti.setText(R.string.textPartiAdd);
-                editParti.setText("");
-                initList();
-            }
-        });
-
-
-        buttonCreate.setOnClickListener(v -> {
-            if (spin.getSelectedItem() == "Selectionner une salle") {
-                Toast.makeText(context, "Veuillez sélectionner une salle", Toast.LENGTH_SHORT).show();
-            } else {
-
-                String salleReplace = (String) spin.getSelectedItem();
+                String salleReplace = (String) binding.spinSalle.getSelectedItem();
                 int salle = Integer.parseInt(salleReplace.substring(6));
-                mReunion.add(new Reunion(salle, heure, minutes, heureF, minutesF, day, dateDay, month, year, String.valueOf(editHost.getText()), mParticipants));
+                mReunion.add(new Reunion(salle, heure, minutes, heureF, minutesF, day, dateDay, month, year, String.valueOf(binding.editHost.getText()), mParticipants));
                 Toast.makeText(context, "Réunion créée", Toast.LENGTH_SHORT).show();
                 dismiss();
                 MainFragment.getInstance().onUpdate();
             }
         });
 
-
-        return view;
-
+        binding.editParti.setOnEditorActionListener((v, actionId, event) -> {
+            boolean handled = false;
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                addParti();
+                handled = true;
+            }
+            return handled;
+        });
     }
 
 
@@ -145,7 +113,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, salle) {
             @Override
             public boolean isEnabled(int position) {
-                for(int i = 0; i <mReunion.size(); i++) {
+                for (int i = 0; i < mReunion.size(); i++) {
                     if (((mReunion.get(i).getHeure() <= heure && mReunion.get(i).getMinute() <= minutesF && mReunion.get(i).getHeureF() >= heure && mReunion.get(i).getMinuteF() >= minutes) || (mReunion.get(i).getHeure() <= heureF && mReunion.get(i).getHeureF() >= heureF)) && mReunion.get(i).getDateDay() == dateDay && mReunion.get(i).getMonth() == month && mReunion.get(i).getSalle() == position) {
                         return false;
                     }
@@ -154,7 +122,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             }
 
             @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent){
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View mView = super.getDropDownView(position, convertView, parent);
                 TextView mText = (TextView) mView;
                 boolean disabled = !isEnabled(position);
@@ -179,15 +147,20 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             if (i == 0) {
                 String heureString = new DecimalFormat("00").format(heure);
                 String minutesString = new DecimalFormat("00").format(minutes);
-                btnHeureD.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+                binding.btnHeureCreaDebut.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
                 CreateReuFrag.this.heure = heure;
                 CreateReuFrag.this.minutes = minutes;
             } else {
                 String heureString = new DecimalFormat("00").format(heure);
                 String minutesString = new DecimalFormat("00").format(minutes);
-                btnHeureF.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
-                CreateReuFrag.this.heureF = heure;
-                CreateReuFrag.this.minutesF = minutes;
+                binding.btnHeureCreaFin.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+                if (heure < CreateReuFrag.this.heure || (heure == CreateReuFrag.this.heure && minutes < CreateReuFrag.this.minutes)) {
+                    Toast.makeText(getContext(), "La réunion ne peut pas finir avant de commencer", Toast.LENGTH_SHORT).show();
+                    showDialogClock(1);
+                } else {
+                    CreateReuFrag.this.heureF = heure;
+                    CreateReuFrag.this.minutesF = minutes;
+                }
             }
         });
         clock.show(fm, "clock");
@@ -204,7 +177,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
             String monthString = time.getMonthInt(month);
             CreateReuFrag.this.month = monthString;
             CreateReuFrag.this.year = year;
-            btnDay.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
+            binding.btnCreaDate.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
 
         });
         date.show(fm, "date");
@@ -215,7 +188,42 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
     }
 
     private void initList() {
-        rvListParti.setAdapter(new ListPartiAdapter(mParticipants));
+        binding.rvListParti.setAdapter(new ListPartiAdapter(mParticipants));
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        bottomSheetBehavior = BottomSheetBehavior.from((View) getView().getParent());
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    public void createTime() {
+        Time time = new Time();
+        day = time.getDay();
+        dateDay = time.getDateDay();
+        month = time.getMonth();
+        year = time.getYear();
+        heure = time.getHeure();
+        minutes = time.getMinutes();
+        heureF = time.getHeure() + 1;
+        minutesF = time.getMinutes();
+    }
+
+    public void addParti() {
+        final InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (!isEmailValid(binding.editParti.getText().toString())) {
+            binding.textAddParti.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            binding.textAddParti.setText(R.string.textAddParti);
+            inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+        } else {
+            binding.textAddParti.setTextColor(getResources().getColor(R.color.textFragColor));
+            mParticipants.add(binding.editParti.getText().toString());
+            inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            binding.textAddParti.setText(R.string.textPartiAdd);
+            binding.editParti.setText("");
+            initList();
+        }
+    }
 }
