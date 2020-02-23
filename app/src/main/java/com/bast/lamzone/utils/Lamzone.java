@@ -1,4 +1,4 @@
-package com.bast.lamzone;
+package com.bast.lamzone.utils;
 
 import android.app.Application;
 

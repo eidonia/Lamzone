@@ -30,6 +30,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bast.lamzone.utils.Constante.DEC_FOR;
+
 public class CreateReuFrag extends BottomSheetDialogFragment {
 
     private List<Reunion> mReunion;
@@ -56,13 +58,13 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         createTime();
         binding.textHeureDebut.setText(getResources().getString(R.string.textHeureDebut));
         binding.textHeureFin.setText(getResources().getString(R.string.textHeureFin));
-        String heureString = new DecimalFormat("00").format(heure);
-        String minutesString = new DecimalFormat("00").format(minutes);
+        String heureString = new DecimalFormat(DEC_FOR).format(heure);
+        String minutesString = new DecimalFormat(DEC_FOR).format(minutes);
         binding.btnCreaDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
         binding.btnHeureCreaDebut.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
         binding.btnHeureCreaDebut.setOnClickListener(v -> showDialogClock(0));
-        String heureStringF = new DecimalFormat("00").format(heureF);
-        String minutesStringF = new DecimalFormat("00").format(minutesF);
+        String heureStringF = new DecimalFormat(DEC_FOR).format(heureF);
+        String minutesStringF = new DecimalFormat(DEC_FOR).format(minutesF);
         binding.btnHeureCreaFin.setText(getResources().getString(R.string.txtHeure, heureStringF, minutesStringF));
         binding.btnHeureCreaFin.setOnClickListener(v -> showDialogClock(1));
         binding.btnCreaDate.setOnClickListener(v -> showDialogDate());
@@ -74,13 +76,15 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         binding.btnAddParti.setOnClickListener(v -> addParti());
 
         binding.btnCreate.setOnClickListener(v -> {
-            if (binding.spinSalle.getSelectedItem() == "Selectionner une salle" || binding.editHost.getText().toString().equals("") || mParticipants.size() == 0) {
-                Toast.makeText(context, "Veuillez remplir les champs", Toast.LENGTH_SHORT).show();
+            if (heureF < heure) {
+                Toast.makeText(context, R.string.ToastHeure, Toast.LENGTH_SHORT).show();
+            } else if (binding.spinSalle.getSelectedItem() == "Selectionner une salle" || binding.editHost.getText().toString().equals("") || mParticipants.size() == 0) {
+                Toast.makeText(context, R.string.ToastChampVide, Toast.LENGTH_SHORT).show();
             } else {
                 String salleReplace = (String) binding.spinSalle.getSelectedItem();
                 int salle = Integer.parseInt(salleReplace.substring(6));
                 mReunion.add(new Reunion(salle, heure, minutes, heureF, minutesF, day, dateDay, month, year, String.valueOf(binding.editHost.getText()), mParticipants));
-                Toast.makeText(context, "Réunion créée", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.ToastCreation, Toast.LENGTH_SHORT).show();
                 dismiss();
                 MainFragment.getInstance().onUpdate();
             }
@@ -145,19 +149,19 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         Clock clock = new Clock();
         clock.setOnTimeChooser((heure, minutes) -> {
             if (i == 0) {
-                String heureString = new DecimalFormat("00").format(heure);
-                String minutesString = new DecimalFormat("00").format(minutes);
+                String heureString = new DecimalFormat(DEC_FOR).format(heure);
+                String minutesString = new DecimalFormat(DEC_FOR).format(minutes);
                 binding.btnHeureCreaDebut.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
                 CreateReuFrag.this.heure = heure;
                 CreateReuFrag.this.minutes = minutes;
             } else {
-                String heureString = new DecimalFormat("00").format(heure);
-                String minutesString = new DecimalFormat("00").format(minutes);
-                binding.btnHeureCreaFin.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+                String heureString = new DecimalFormat(DEC_FOR).format(heure);
+                String minutesString = new DecimalFormat(DEC_FOR).format(minutes);
                 if (heure < CreateReuFrag.this.heure || (heure == CreateReuFrag.this.heure && minutes < CreateReuFrag.this.minutes)) {
-                    Toast.makeText(getContext(), "La réunion ne peut pas finir avant de commencer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.ToastHeure, Toast.LENGTH_SHORT).show();
                     showDialogClock(1);
                 } else {
+                    binding.btnHeureCreaFin.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
                     CreateReuFrag.this.heureF = heure;
                     CreateReuFrag.this.minutesF = minutes;
                 }

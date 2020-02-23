@@ -18,6 +18,9 @@
     <string name="textPartiAdd">Participant ajouté</string>
     <string name="textHeureDebut">Heure de début</string>
     <string name="textHeureFin">Heure de fin</string>
+    <string name="ToastHeure">La réunion finit avant de commencer.</string>
+    <string name="ToastChampVide">Veuillez remplir les champs</string>
+    <string name="ToastCreation">Réunion crée</string>
 
     Filter Réunion
 

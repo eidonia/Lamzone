@@ -1,6 +1,7 @@
 package com.bast.lamzone.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder> {
+import static com.bast.lamzone.utils.Constante.DEC_FOR;
+
+class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHolder> {
 
     private List<Reunion> mReunion;
     private Context context;
@@ -28,7 +31,7 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
     private String listParti;
     private ReuPageLoader reuPageLoader;
 
-    public ReunionAdaptater(List<Reunion> mReunion, int numList, Context context, MainFragment mainFragment, MainActivity mainActivity, ReuPageLoader reuPageLoader) {
+    public ReunionAdapter(List<Reunion> mReunion, int numList, Context context, MainFragment mainFragment, MainActivity mainActivity, ReuPageLoader reuPageLoader) {
         this.mReunion = mReunion;
         this.context = context;
         this.numList = numList;
@@ -38,7 +41,7 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReunionAdaptater.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ReunionAdapter.ViewHolder holder, final int position) {
         final Reunion reu = mReunion.get(position);
         if (reu.getSalle() % 2 == 0){
             holder.img.setBackgroundTintList(context.getResources().getColorStateList(R.color.colorList1));
@@ -46,7 +49,7 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
             holder.img.setBackgroundTintList(context.getResources().getColorStateList(R.color.colorList2));
         }
 
-        String minuteDec = new DecimalFormat("00").format(reu.getMinute());
+        String minuteDec = new DecimalFormat(DEC_FOR).format(reu.getMinute());
 
         holder.txtReu.setText(context.getResources().getString(R.string.reunion, reu.getSalle(), reu.getHeure(), minuteDec, reu.getHost()));
 
@@ -60,15 +63,16 @@ class ReunionAdaptater extends RecyclerView.Adapter<ReunionAdaptater.ViewHolder>
         holder.txtParti.setText(listParti);
 
         holder.btnDelete.setOnClickListener(v -> {
+            Log.e("adapter", "suppression");
             mainFragment.DltReu(reu, numList);
-            mainActivity.checkIfDel(position);
+            mainActivity.checkIfDel(reu.getReuID());
         });
 
     }
 
     @NonNull
     @Override
-    public ReunionAdaptater.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReunionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
 
         return new ViewHolder(view);

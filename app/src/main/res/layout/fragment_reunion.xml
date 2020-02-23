@@ -148,7 +148,7 @@
                         android:layout_height="1px"
                         android:background="#6DEAE4E4" />
 
-                    <com.bast.lamzone.ExpandableText
+                    <com.bast.lamzone.utils.ExpandableText
                         android:id="@+id/textAbout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

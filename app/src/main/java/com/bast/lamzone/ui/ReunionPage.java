@@ -18,6 +18,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bast.lamzone.utils.Constante.DEC_FOR;
+import static com.bast.lamzone.utils.Constante.INT_VAL;
+
 public class ReunionPage extends AppCompatActivity {
 
     ApiServiceReu apiService;
@@ -30,10 +33,10 @@ public class ReunionPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reunion_page);
 
-        ReunionFragment fragment = ReunionFragment.newInstance(getIntent().getIntegerArrayListExtra("POSREU"));
+        ReunionFragment fragment = ReunionFragment.newInstance(getIntent().getIntegerArrayListExtra(INT_VAL));
 
         ArrayList<Integer> mPosandNumList;
-        mPosandNumList = getIntent().getIntegerArrayListExtra("POSREU");
+        mPosandNumList = getIntent().getIntegerArrayListExtra(INT_VAL);
         itemPos = mPosandNumList.get(0);
         int numList = mPosandNumList.get(1);
         apiService = Di.getApiServiceReu();
@@ -43,7 +46,7 @@ public class ReunionPage extends AppCompatActivity {
             lReu = apiService.getReunionFiltered();
         }
         reunion = lReu.get(itemPos);
-        final String minuteDec = new DecimalFormat("00").format(reunion.getMinute());
+        final String minuteDec = new DecimalFormat(DEC_FOR).format(reunion.getMinute());
 
         getSupportActionBar().setTitle(getResources().getString(R.string.reunionPage, reunion.getSalle(), reunion.getHeure(), minuteDec, reunion.getDay(), reunion.getDateDay(), reunion.getHost()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

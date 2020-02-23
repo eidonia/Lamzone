@@ -1,6 +1,7 @@
 package com.bast.lamzone.models;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Reunion {
@@ -134,5 +135,18 @@ public class Reunion {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reunion reunion = (Reunion) o;
+        return reuID == reunion.reuID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reuID);
     }
 }

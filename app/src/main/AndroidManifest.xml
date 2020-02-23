@@ -3,7 +3,7 @@
     package="com.bast.lamzone">
 
     <application
-        android:name=".Lamzone"
+        android:name=".utils.Lamzone"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,6 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

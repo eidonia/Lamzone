@@ -19,6 +19,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bast.lamzone.utils.Constante.DEC_FOR;
+import static com.bast.lamzone.utils.Constante.INT_VAL;
+
 public class ReunionFragment extends Fragment {
 
     ApiServiceReu apiService;
@@ -34,7 +37,7 @@ public class ReunionFragment extends Fragment {
     public static ReunionFragment newInstance(ArrayList<Integer> posAndNumList) {
         ReunionFragment fragment = new ReunionFragment();
         Bundle args = new Bundle();
-        args.putIntegerArrayList("POSREU", posAndNumList);
+        args.putIntegerArrayList(INT_VAL, posAndNumList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +54,7 @@ public class ReunionFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         ArrayList<Integer> mPosandNumList;
-        mPosandNumList = getArguments().getIntegerArrayList("POSREU");
+        mPosandNumList = getArguments().getIntegerArrayList(INT_VAL);
         itemPos = mPosandNumList.get(0);
         int numList = mPosandNumList.get(1);
         apiService = Di.getApiServiceReu();
@@ -61,7 +64,7 @@ public class ReunionFragment extends Fragment {
             lReu = apiService.getReunionFiltered();
         }
         reunion = lReu.get(itemPos);
-        final String minuteDec = new DecimalFormat("00").format(reunion.getMinute());
+        final String minuteDec = new DecimalFormat(DEC_FOR).format(reunion.getMinute());
 
         layoutBack = view.findViewById(R.id.reuLayoutBack);
 

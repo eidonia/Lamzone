@@ -2,6 +2,7 @@ package com.bast.lamzone.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,10 +29,8 @@ import java.util.List;
 public class MainFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private static MainFragment instance;
     ApiServiceReu apiService;
-    String day;
-    int dateDay;
-    String month;
-    int year;
+    String day, month;
+    int dateDay, year, checkMenu = 0;
     private FragmentMainBinding binding;
     private List<Reunion> mReunion;
     private List<Reunion> mFilteredReunion;
@@ -79,8 +78,9 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.slider.setToHide(binding.boxfilter);
+        binding.slider.toggle();
         instance = this;
-
         Time time = new Time();
         day = time.getDay();
         dateDay = time.getDateDay();
@@ -91,20 +91,18 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
         binding.radioDate.setOnCheckedChangeListener(this);
 
 
-
         binding.rvList.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         initList();
+
         binding.radioRoom.setChecked(true);
         binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, day, dateDay, month, year));
+
         binding.fab.setOnClickListener(itemView -> {
-            if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                ViewGroup.LayoutParams params = binding.boxfilter.getLayoutParams();
-                params.height = 0;
-                binding.boxfilter.setLayoutParams(params);
+            if (binding.slider.toggle()) {
+                binding.slider.toggle();
             }
-            onUpdate();
             showDialogFrag();
         });
     }
@@ -114,10 +112,10 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
         mReunion = apiService.getReunion();
         mFilteredReunion = apiService.getReunionFiltered();
 
-        if (binding.boxfilter.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            binding.rvList.setAdapter(new ReunionAdaptater(mFilteredReunion, 1, getContext(), this, (MainActivity) getActivity(), (ReunionAdaptater.ReuPageLoader) getActivity()));
+        if (checkMenu == 1) {
+            binding.rvList.setAdapter(new ReunionAdapter(mFilteredReunion, 1, getContext(), this, (MainActivity) getActivity(), (ReunionAdapter.ReuPageLoader) getActivity()));
         } else {
-            binding.rvList.setAdapter(new ReunionAdaptater(mReunion, 0, getContext(), this, (MainActivity) getActivity(), (ReunionAdaptater.ReuPageLoader) getActivity()));
+            binding.rvList.setAdapter(new ReunionAdapter(mReunion, 0, getContext(), this, (MainActivity) getActivity(), (ReunionAdapter.ReuPageLoader) getActivity()));
         }
     }
 
@@ -136,18 +134,14 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_filter) {
-            if (binding.boxfilter.getLayoutParams().height != ViewGroup.LayoutParams.WRAP_CONTENT) {
-                ViewGroup.LayoutParams params = binding.boxfilter.getLayoutParams();
-                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                binding.boxfilter.setLayoutParams(params);
-                onUpdate();
-            } else {
-                ViewGroup.LayoutParams params2 = binding.boxfilter.getLayoutParams();
-                params2.height = 1;
-                binding.boxfilter.setLayoutParams(params2);
+            if (binding.slider.toggle()) {
+                this.checkMenu = 1;
                 if (mFilteredReunion != null)
                     mFilteredReunion.clear();
                 RaZFilter();
+                onUpdate();
+            } else {
+                this.checkMenu = 0;
                 onUpdate();
             }
         } else if (id == R.id.darkmode) {
@@ -297,6 +291,7 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
     }
 
     public void DltReu(Reunion reunion, int i) {
+        Log.e("dltReu", "suppression " + i);
         if (i == 0) {
             apiService.deleteReunion(reunion);
         } else {

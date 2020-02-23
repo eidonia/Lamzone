@@ -10,7 +10,9 @@ import com.bast.lamzone.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ReunionAdaptater.ReuPageLoader {
+import static com.bast.lamzone.utils.Constante.INT_VAL;
+
+public class MainActivity extends AppCompatActivity implements ReunionAdapter.ReuPageLoader {
 
     private ActivityMainBinding binding;
 
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements ReunionAdaptater.
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.listFragment, new MainFragment())
+                .replace(R.id.listFragment, new MainFragment())
                 .addToBackStack(null)
                 .commit()
         ;
@@ -40,20 +42,22 @@ public class MainActivity extends AppCompatActivity implements ReunionAdaptater.
                     .commit();
         } else {
             Intent intent = new Intent(this, ReunionPage.class);
-            intent.putIntegerArrayListExtra("POSREU", numAndPosList);
+            intent.putIntegerArrayListExtra(INT_VAL, numAndPosList);
             startActivity(intent);
         }
     }
 
-    public void checkIfDel(int pos) {
+    public void checkIfDel(int reuID) {
         if (findViewById(R.id.frameReu) != null) {
-            ReunionFragment fragment = new ReunionFragment();
-            if (fragment.itemPos == pos) {
+            ReunionFragment fragment = (ReunionFragment) getSupportFragmentManager().findFragmentById(R.id.frameReu);
+            if (fragment != null && fragment.reunion.getReuID() == reuID) {
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .remove(getSupportFragmentManager().findFragmentById(R.id.frameReu))
+                        .remove(fragment)
                         .commit();
+
             }
         }
     }
 }
+
