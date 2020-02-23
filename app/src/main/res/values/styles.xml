@@ -53,6 +53,11 @@
         <item name="android:textColorPrimary">#000</item>
     </style>
 
+    <style name="MyTimePicker" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="android:numbersTextColor">#000</item>
+    </style>
+
     <style name="CustomAlertDialog" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="android:windowBackground">@drawable/popup_background</item>
         <item name="android:colorAccent">@color/colorPrimaryDark</item>
