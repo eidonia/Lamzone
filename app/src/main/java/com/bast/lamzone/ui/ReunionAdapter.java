@@ -1,7 +1,6 @@
 package com.bast.lamzone.ui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +62,6 @@ class ReunionAdapter extends RecyclerView.Adapter<ReunionAdapter.ViewHolder> {
         holder.txtParti.setText(listParti);
 
         holder.btnDelete.setOnClickListener(v -> {
-            Log.e("adapter", "suppression");
             mainFragment.DltReu(reu, numList);
             mainActivity.checkIfDel(reu.getReuID());
         });

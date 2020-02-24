@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class ExampleUnitTest {
+public class MeetingUnitTest {
 
     @Test
     public void reunionIsCreated() {

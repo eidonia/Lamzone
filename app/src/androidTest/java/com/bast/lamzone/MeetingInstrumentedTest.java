@@ -31,7 +31,7 @@ import static org.junit.Assert.assertThat;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class MeetingInstrumentedTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule =
@@ -42,6 +42,11 @@ public class ExampleInstrumentedTest {
     public void setUp() {
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+
+        }
 
     }
 
@@ -49,14 +54,12 @@ public class ExampleInstrumentedTest {
     @Test
     public void creationReunion() {
         createReunion(2, "Bastien", "bastien@bast.com");
-
         onView(withId(R.id.rvList)).check(matches(hasChildCount(1)));
     }
 
 
     @Test
     public void filterReunion() {
-        onView(withId(R.id.rvList)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteReunion()));
         createReunion(1, "Bastien", "bastien@bast.com");
         createReunion(2, "Bastien", "bastien@bast.com");
         onView(withId(R.id.action_filter)).perform(click());
@@ -80,7 +83,6 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void suppressionReunion() {
-        onView(withId(R.id.rvList)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteReunion()));
         createReunion(2, "basti", "bas@bas.com");
         onView(withId(R.id.rvList)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteReunion()));
         onView(withId(R.id.rvList)).check(matches(hasChildCount(0)));
