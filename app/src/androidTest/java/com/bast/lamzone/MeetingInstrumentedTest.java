@@ -45,7 +45,6 @@ public class MeetingInstrumentedTest {
 
     }
 
-
     @Test
     public void creationReunion() {
         createReunion(2, "Bastien", "bastien@bast.com");
