@@ -33,7 +33,6 @@ public class Clock extends DialogFragment {
         timePicker.setIs24HourView(true);
 
 
-
         txtOK = view.findViewById(R.id.txtOK);
         txtOK.setOnClickListener(v -> {
 

@@ -29,6 +29,7 @@ public class Date extends DialogFragment {
         builder.setView(view);
 
         datePicker = view.findViewById(R.id.datePicker);
+        datePicker.setMinDate(System.currentTimeMillis() - 1000);
 
         TextView txtOK = view.findViewById(R.id.txtOK);
         txtOK.setOnClickListener(v -> {

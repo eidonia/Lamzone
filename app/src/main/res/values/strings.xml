@@ -21,6 +21,7 @@
     <string name="ToastHeure">La réunion finit avant de commencer.</string>
     <string name="ToastChampVide">Veuillez remplir les champs</string>
     <string name="ToastCreation">Réunion crée</string>
+    <string name="ToastHeureDebut">L\'heure de début est avant l\'heure actuelle.</string>
 
     Filter Réunion
 

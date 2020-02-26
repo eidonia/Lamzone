@@ -42,11 +42,6 @@ public class MeetingInstrumentedTest {
     public void setUp() {
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-
-        }
 
     }
 

@@ -41,6 +41,7 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
     private String day, month;
     BottomSheetBehavior bottomSheetBehavior;
     CreatereuFragBinding binding;
+    Time time = new Time();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
@@ -149,11 +150,18 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         Clock clock = new Clock();
         clock.setOnTimeChooser((heure, minutes) -> {
             if (i == 0) {
+                int heureNow = time.getHeure();
+                int minuteNow = time.getMinutes();
                 String heureString = new DecimalFormat(DEC_FOR).format(heure);
                 String minutesString = new DecimalFormat(DEC_FOR).format(minutes);
-                binding.btnHeureCreaDebut.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
-                CreateReuFrag.this.heure = heure;
-                CreateReuFrag.this.minutes = minutes;
+                if (heure == heureNow && minuteNow > minutes || heureNow > heure) {
+                    Toast.makeText(getContext(), R.string.ToastHeureDebut, Toast.LENGTH_SHORT).show();
+                    showDialogClock(0);
+                } else {
+                    binding.btnHeureCreaDebut.setText(getResources().getString(R.string.txtHeure, heureString, minutesString));
+                    CreateReuFrag.this.heure = heure;
+                    CreateReuFrag.this.minutes = minutes;
+                }
             } else {
                 String heureString = new DecimalFormat(DEC_FOR).format(heure);
                 String minutesString = new DecimalFormat(DEC_FOR).format(minutes);
@@ -203,7 +211,6 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
     }
 
     public void createTime() {
-        Time time = new Time();
         day = time.getDay();
         dateDay = time.getDateDay();
         month = time.getMonth();

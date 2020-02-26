@@ -71,6 +71,8 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
                              Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        binding.slider.setToHide(binding.boxfilter);
+        binding.slider.toggle();
         setHasOptionsMenu(true);
         return view;
     }
@@ -78,8 +80,6 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.slider.setToHide(binding.boxfilter);
-        binding.slider.toggle();
         instance = this;
         Time time = new Time();
         day = time.getDay();
