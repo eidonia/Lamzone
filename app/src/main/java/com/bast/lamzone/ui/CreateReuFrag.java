@@ -150,11 +150,13 @@ public class CreateReuFrag extends BottomSheetDialogFragment {
         Clock clock = new Clock();
         clock.setOnTimeChooser((heure, minutes) -> {
             if (i == 0) {
+                int day = time.getDateDay();
+                String month = time.getMonth();
                 int heureNow = time.getHeure();
                 int minuteNow = time.getMinutes();
                 String heureString = new DecimalFormat(DEC_FOR).format(heure);
                 String minutesString = new DecimalFormat(DEC_FOR).format(minutes);
-                if (heure == heureNow && minuteNow > minutes || heureNow > heure) {
+                if (dateDay == day && month.equals(this.month) && heure == heureNow && minuteNow > minutes || dateDay == day && month.equals(this.month) && heureNow > heure) {
                     Toast.makeText(getContext(), R.string.ToastHeureDebut, Toast.LENGTH_SHORT).show();
                     showDialogClock(0);
                 } else {

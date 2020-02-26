@@ -8,8 +8,4 @@ public class Di {
     private static ApiServiceReu apiService = new ReuApiServ();
 
     public static ApiServiceReu getApiServiceReu() { return apiService;}
-
-    public static void resetApiService() {
-        apiService = new ReuApiServ();
-    }
 }

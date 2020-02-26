@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bast.lamzone.R;
 import com.bast.lamzone.databinding.ActivityMainBinding;
-import com.bast.lamzone.di.Di;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements ReunionAdapter.Re
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Di.resetApiService();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

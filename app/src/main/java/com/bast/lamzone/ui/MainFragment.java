@@ -188,6 +188,8 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
             MainFragment.this.month = monthString;
             MainFragment.this.year = year;
             binding.btnFilterDate.setText(getResources().getString(R.string.textCreaDate, dayString, dateDay, monthString, year));
+            FilterDate(MainFragment.this.month);
+            onUpdate();
         });
         date.show(fm, "date");
     }
@@ -244,11 +246,16 @@ public class MainFragment extends Fragment implements CompoundButton.OnCheckedCh
                 mFilteredReunion.clear();
                 ClickableRoom(1);
                 binding.radioRoom.setChecked(false);
-
-                binding.btnFilterDate.setOnClickListener(v -> showDialogDate());
-
                 FilterDate(month);
                 onUpdate();
+
+                binding.btnFilterDate.setOnClickListener(v -> {
+                    if (mFilteredReunion.size() > 0) {
+                        mFilteredReunion.clear();
+                        onUpdate();
+                    }
+                    showDialogDate();
+                });
             }
         }
     }
