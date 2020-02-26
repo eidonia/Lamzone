@@ -21,6 +21,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -67,6 +68,8 @@ public class MeetingInstrumentedTest {
         onView(withId(R.id.salle2)).perform(click());
         onView(withId(R.id.radioDate)).perform(click());
         onView(withId(R.id.rvList)).check(matches(hasChildCount(2)));
+        onView(withId(R.id.rvList)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.gridNom)).check(matches(withText("Salle 1")));
     }
 
     @Test
